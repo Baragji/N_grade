@@ -354,3 +354,21 @@ After analyzing all three options, I decided:
 - **Trajectory**: Stable, incremental, disciplined
 
 **Key Insight**: User is demonstrating the behavioral change needed for long-term success. The spiral was recognized early (repo #21) and governed appropriately.
+
+---
+
+## Part 7: Today's Win (Executor MVP imported into N_grade)
+
+- **Action**: Copied `executor-mvp` into `/Users/Yousef_1/Coding/N_grade/executor-mvp` excluding `.git`, `node_modules`, `dist`, `coverage`, `output`.
+- **Result**: Installed dependencies and ran tests — all green.
+- **Commit**: `feat: import executor-mvp as foundation`.
+
+### Tomorrow's Win (Decision 002)
+- **Goal**: Run `executor-mvp` locally and generate a "hello-world-app" via the UI, then stop.
+- **Steps**:
+  1. Copy `.env.example` to `.env` and set either `OPENAI_API_KEY` or `ANTHROPIC_API_KEY`.
+  2. Start server: `npm --prefix /Users/Yousef_1/Coding/N_grade/executor-mvp run dev`.
+  3. Open `http://localhost:3000`, submit prompt: "Build a minimal hello world app. Single endpoint that returns 'Hello World'." (provide a `projectName` if desired).
+  4. Confirm output in `/Users/Yousef_1/Coding/N_grade/executor-mvp/output/<slug>` and browse via `/output/<slug>/`.
+  5. Commit the generated output: `git add -A && git commit -m "chore: generated hello-world-app via executor"`.
+  6. Stop and celebrate — no refactors or extras.

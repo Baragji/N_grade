@@ -1,0 +1,16 @@
+{
+  "repo": "executor-mvp",
+  "branch": "mvp-phase2",
+  "commit": "dec575d",
+  "checks": { "typecheck": true, "lint": true, "build": true, "tests": true },
+  "tokens": { "in": 0, "out": 0 },
+  "time_min": 20,
+  "artifacts": ["coverage/lcov.info"],
+  "last_preview": "http://localhost:3000/",
+  "next_steps": [
+    { "id": "tighten-ci-tests", "dod": "CI runs unit tests and uploads coverage; gates block on failure" }
+  ],
+  "risks": ["Generated output may include nested projects with their own test runners; excluded via Vitest config"],
+  "otel_span_id": null,
+  "graph_checkpoint_id": null
+}

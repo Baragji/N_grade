@@ -1,0 +1,65 @@
+{
+  "$schema": "./documentation_delivery.contract.schema.json",
+  "contract_id": "TEMPLATE_CONTRACT_2025",
+  "contract_version": "1.0.0",
+  "title": "Template Contract for AI Deliverables",
+  "description": "Copy this template and customize for your specific deliverable. All paths should be relative to repository root.",
+  "deliverables": [
+    {
+      "file_path": "docs/your_document.md",
+      "description": "Replace with your deliverable description",
+      "quality_gates": {
+        "line_count": {
+          "min": 100,
+          "max": 500,
+          "description": "Adjust range based on your needs"
+        },
+        "forbidden_patterns": [
+          "TODO",
+          "TBD",
+          "FIXME",
+          "\\.\\.\\.",
+          "\\(template\\)",
+          "\\[FILL IN\\]"
+        ],
+        "required_patterns": {
+          "^## ": 5,
+          "^### ": 10,
+          "Success criteria": 3,
+          "```": 5,
+          "Evidence:": 3
+        },
+        "structural_requirements": {
+          "min_code_blocks": 5,
+          "min_tables": 2,
+          "min_lists": 10
+        }
+      }
+    }
+  ],
+  "cross_file_validations": [
+    {
+      "validation_name": "consistency_check",
+      "description": "Add cross-file checks if needed",
+      "files": [
+        "docs/your_document.md",
+        "docs/related_document.md"
+      ],
+      "check_type": "manual_review"
+    }
+  ],
+  "definition_of_done": {
+    "all_deliverables_present": true,
+    "all_quality_gates_passed": true,
+    "all_cross_file_validations_passed": true,
+    "no_forbidden_patterns_found": true,
+    "validation_report_generated": true
+  },
+  "metadata": {
+    "created_by": "Your Name",
+    "created_date": "2025-01-XX",
+    "ai_agent": "GPT-4 / Claude / Codex",
+    "estimated_effort_hours": 2,
+    "priority": "high"
+  }
+}

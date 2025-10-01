@@ -1,0 +1,17 @@
+{
+  "repo": "executor-mvp",
+  "branch": "mvp-phase2",
+  "commit": "dec575d",
+  "checks": { "typecheck": true, "lint": true, "build": true },
+  "tokens": { "in": 0, "out": 0 },
+  "time_min": 12,
+  "artifacts": [],
+  "last_preview": "http://localhost:3000/",
+  "next_steps": [
+    { "id": "ci-pr-template", "dod": "CI green; PR template renders with checklists" }
+  ],
+  "risks": ["CI setup may require more repo ordering"],
+  "otel_span_id": null,
+  "graph_checkpoint_id": null
+}
+

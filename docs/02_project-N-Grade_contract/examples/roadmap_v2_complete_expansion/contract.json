@@ -1,0 +1,245 @@
+{
+  "$schema": "./documentation_delivery.contract.schema.json",
+  "contract_version": "1.0.0",
+  "contract_id": "ROADMAP_V2_COMPLETE_EXPANSION_2025",
+  "intent": "Force complete expansion of autonomous_ai_roadmap_v2.md with zero tolerance for templates, duplicates, or incomplete sections",
+  
+  "deliverables": [
+    {
+      "file_path": "autonomous_ai_roadmap_v2.md",
+      "file_type": "markdown",
+      "purpose": "Complete, production-grade roadmap with full implementation details, code examples, and numeric criteria for all phases",
+      "quality_gates": {
+        "min_lines": 1200,
+        "max_lines": 2000,
+        "required_sections": [
+          "^## Phase 0:",
+          "^## Phase 1:",
+          "^## Phase 2:",
+          "^## Phase 3:",
+          "^## Phase 4:",
+          "^## Phase 5:",
+          "^## Phase 6:",
+          "^## Phase 7:",
+          "^## Phase 8:",
+          "^### 0\\.0 ",
+          "^### 0\\.1 ",
+          "^### 0\\.2 ",
+          "^### 0\\.3 ",
+          "^### 0\\.4 ",
+          "^### 0\\.5 ",
+          "^### 0\\.6 ",
+          "^### 1\\.0 ",
+          "^### 1\\.1 ",
+          "^### 1\\.2 ",
+          "^### 1\\.3 ",
+          "^### 1\\.4 ",
+          "^### 1\\.5 ",
+          "^### 1\\.6 ",
+          "^### 1\\.7 ",
+          "^### Evidence Required",
+          "^### Validation Process"
+        ],
+        "forbidden_patterns": [
+          {
+            "pattern": "\\(template\\)",
+            "reason": "NO TEMPLATE PLACEHOLDERS ALLOWED - all sections must be fully expanded"
+          },
+          {
+            "pattern": "TODO",
+            "reason": "NO TODOs - work must be complete"
+          },
+          {
+            "pattern": "TBD",
+            "reason": "NO TBDs - all details must be determined"
+          },
+          {
+            "pattern": "\\[FILL IN\\]",
+            "reason": "NO FILL-IN PLACEHOLDERS - all content must be complete"
+          },
+          {
+            "pattern": "\\.\\.\\.",
+            "reason": "NO ELLIPSIS INDICATING OMITTED CONTENT - must be exhaustive"
+          },
+          {
+            "pattern": "See original",
+            "reason": "MUST BE STANDALONE - no references to other documents for core content"
+          },
+          {
+            "pattern": "Refer to",
+            "reason": "MUST BE SELF-CONTAINED - all essential details must be present"
+          }
+        ],
+        "required_patterns": [
+          {
+            "pattern": "```(python|bash|yaml|json)",
+            "min_occurrences": 30,
+            "reason": "MUST include at least 30 code examples across all phases"
+          },
+          {
+            "pattern": "\\d+\\.\\d+%|≥\\d+%|<\\d+ms|\\d+\\s+seconds",
+            "min_occurrences": 40,
+            "reason": "MUST include at least 40 numeric metrics/thresholds (percentages, latencies, counts)"
+          },
+          {
+            "pattern": "^\\s*[-*]\\s+",
+            "min_occurrences": 200,
+            "reason": "MUST have at least 200 bullet points with detailed procedures/requirements"
+          },
+          {
+            "pattern": "Success criteria:|Acceptance criteria:|Exit criteria:",
+            "min_occurrences": 20,
+            "reason": "MUST define clear success criteria for major sections"
+          },
+          {
+            "pattern": "evidence/|gates/|sbom/",
+            "min_occurrences": 50,
+            "reason": "MUST reference canonical evidence paths extensively"
+          }
+        ],
+        "no_duplicate_sections": true,
+        "structural_requirements": {
+          "min_code_blocks": 30,
+          "min_tables": 5,
+          "min_lists": 50,
+          "require_toc": false
+        }
+      },
+      "acceptance_criteria": [
+        "Phase 0 (sections 0.0-0.6) must be fully expanded with all implementation details",
+        "Phase 1 (sections 1.0-1.7) must be fully expanded with code examples and metrics",
+        "Phase 2-8 must include complete procedures, not condensed summaries",
+        "All 'Evidence Required' sections must list specific file paths from canonical structure",
+        "All 'Validation Process' sections must include step-by-step procedures",
+        "Every major feature must include at least one code snippet or configuration example",
+        "Every quality requirement must include numeric thresholds (e.g., >95%, <100ms)",
+        "No section appears twice (check for copy-paste errors)",
+        "Document is standalone - reader should not need to reference autonomous_ai_roadmap.md for understanding"
+      ]
+    },
+    {
+      "file_path": "_reports/roadmap_v2_validation.json",
+      "file_type": "json",
+      "purpose": "Machine-readable validation report proving all quality gates passed",
+      "quality_gates": {
+        "min_lines": 50,
+        "json_schema_validation": {
+          "schema_file": "docs_ui_2_contracts/N-Grade_contract/documentation_delivery.contract.schema.json",
+          "strict_mode": true
+        }
+      },
+      "dependencies": ["autonomous_ai_roadmap_v2.md"],
+      "acceptance_criteria": [
+        "Must conform to return_payload structure defined in schema",
+        "final_verdict must be 'ACCEPTED'",
+        "All quality_gate_results must be true",
+        "No failures array entries with severity CRITICAL or ERROR"
+      ]
+    }
+  ],
+
+  "cross_file_validations": [
+    {
+      "name": "taxonomy_roadmap_phase_consistency",
+      "description": "Verify roadmap phases match taxonomy Phase mappings",
+      "files": [
+        "autonomous_ai_roadmap_v2.md",
+        "docs/taxonomy/traceability_matrix.csv"
+      ],
+      "validation_type": "reference_consistency",
+      "rules": [
+        "All Phase numbers mentioned in roadmap (0-8) must appear in traceability matrix Roadmap_Phase column",
+        "Functions listed in roadmap sections must match Function_ID in traceability matrix for that phase",
+        "Evidence paths in roadmap must match Evidence_Path in traceability matrix"
+      ]
+    },
+    {
+      "name": "no_duplicate_sections",
+      "description": "Ensure no section headers appear multiple times",
+      "files": ["autonomous_ai_roadmap_v2.md"],
+      "validation_type": "completeness_check",
+      "rules": [
+        "Section 0.6 must appear exactly once (NOT twice as in previous delivery)",
+        "Section 1.7 must appear exactly once (NOT twice as in previous delivery)",
+        "All section numbers (X.Y format) must be unique"
+      ]
+    },
+    {
+      "name": "evidence_path_canonical",
+      "description": "All evidence paths must use canonical structure (no legacy paths)",
+      "files": ["autonomous_ai_roadmap_v2.md"],
+      "validation_type": "data_consistency",
+      "rules": [
+        "Use 'sbom/SBOM.json' NOT 'evidence/sbom.json'",
+        "Use 'gates/g0_intent.json' NOT 'evidence/g0-intent.json'",
+        "Use 'gates/gX_*.json' pattern with underscores, not hyphens",
+        "Use 'security/gitleaks.txt' NOT 'gitleaks.log' or 'evidence/gitleaks.json'"
+      ]
+    }
+  ],
+
+  "execution_constraints": {
+    "max_session_time_hours": 5.0,
+    "checkpoint_required": true,
+    "checkpoint_interval": 1,
+    "fail_fast": true,
+    "dry_run_required": false,
+    "backup_originals": true
+  },
+
+  "definition_of_done": {
+    "all_deliverables_present": true,
+    "all_quality_gates_passed": true,
+    "all_cross_file_validations_passed": true,
+    "no_forbidden_patterns_found": true,
+    "manual_review_completed": false,
+    "validation_report_generated": true
+  },
+
+  "return_payload": {
+    "contract_id": "ROADMAP_V2_COMPLETE_EXPANSION_2025",
+    "execution_summary": {
+      "start_time": "YYYY-MM-DDTHH:MM:SSZ",
+      "end_time": "YYYY-MM-DDTHH:MM:SSZ",
+      "elapsed_seconds": 0,
+      "deliverables_count": 2
+    },
+    "deliverable_status": [],
+    "cross_file_validation_results": [],
+    "definition_of_done_status": {
+      "all_deliverables_present": false,
+      "all_quality_gates_passed": false,
+      "all_cross_file_validations_passed": false,
+      "no_forbidden_patterns_found": false,
+      "validation_report_generated": false
+    },
+    "final_verdict": "REJECTED",
+    "rejection_reasons": [],
+    "validation_report_path": "_reports/roadmap_v2_validation.json"
+  },
+
+  "additional_requirements": {
+    "expansion_guidelines": {
+      "phase_0_detail_level": "Each subsection (0.0-0.6) must have at minimum: (1) 3-5 paragraph overview, (2) implementation steps as numbered list with sub-bullets, (3) at least one code example, (4) success criteria with numeric thresholds, (5) evidence file paths",
+      "phase_1_detail_level": "Each subsection (1.0-1.7) must have at minimum: (1) feature description, (2) technical requirements with metrics, (3) integration points, (4) code snippets, (5) validation procedures, (6) rollback procedures",
+      "code_example_standards": "All code blocks must be: (1) syntactically valid, (2) include inline comments, (3) show realistic values not placeholders, (4) demonstrate the specific feature being discussed",
+      "metric_standards": "All numeric criteria must: (1) specify exact thresholds (e.g., ≥95% not 'high'), (2) include units (%, ms, MB), (3) state measurement method, (4) reference evidence file where metric is captured"
+    },
+    "prohibited_shortcuts": [
+      "Condensing multiple features into single bullet points",
+      "Using 'etc.' to indicate omitted details",
+      "Referencing external documents for core implementation procedures",
+      "Combining phases to reduce line count",
+      "Using generic placeholders instead of specific values",
+      "Listing evidence paths without explaining what each contains",
+      "Omitting error handling or edge cases from code examples",
+      "Skipping validation procedures for complex features"
+    ],
+    "quality_expectations": {
+      "reader_persona": "Staff engineer who has never seen this codebase",
+      "standalone_requirement": "Document must be sufficient to implement the entire system without external references",
+      "precision_requirement": "Every configurable value, threshold, or path must be explicit (no ambiguity)",
+      "completeness_requirement": "Every feature mentioned in taxonomy must have implementation details in roadmap"
+    }
+  }
+}

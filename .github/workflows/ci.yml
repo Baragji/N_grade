@@ -26,9 +26,11 @@ jobs:
           black --check src
       - name: Run tests
         run: |
+          set +e
           if [ -d tests ]; then
             python -m pytest --maxfail=5
             exit_code=$?
+            # pytest returns 5 when no tests were collected
             if [ $exit_code -eq 5 ]; then
               echo "No tests collected yet (Phase 0 foundation)"
               exit 0

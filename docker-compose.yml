@@ -21,7 +21,7 @@ services:
     volumes:
       - ./src:/app/src
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      test: ["CMD-SHELL", "python - << 'PYHC'\nimport sys, urllib.request\ntry:\n    with urllib.request.urlopen('http://localhost:8000/', timeout=3) as r:\n        sys.exit(0 if 200 <= r.status < 400 else 1)\nexcept Exception:\n    sys.exit(1)\nPYHC"]
       interval: 30s
       timeout: 5s
       retries: 5

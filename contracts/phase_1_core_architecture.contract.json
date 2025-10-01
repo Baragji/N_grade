@@ -1,0 +1,633 @@
+{
+  "$schema": "../docs/Workflows/02_project-N-Grade_contract/documentation_delivery.contract.schema.json",
+  "contract_version": "1.0.0",
+  "contract_id": "PHASE_1_CORE_ARCHITECTURE_2025",
+  "intent": "Enforce complete, production-grade Phase 1 core architecture delivery with state management, orchestration, LLM routing, FinOps guardrails, and strict quality gates. Zero tolerance for incomplete work.",
+  
+  "deliverables": [
+    {
+      "file_path": "src/state/repository.py",
+      "file_type": "python",
+      "purpose": "Distributed state repository combining Redis (cache) and PostgreSQL (durability) with SHA-256 integrity validation, <50ms Redis latency, <120ms PostgreSQL writes.",
+      "quality_gates": {
+        "min_lines": 100,
+        "max_lines": 250,
+        "required_patterns": [
+          {"pattern": "from redis import Redis", "min_occurrences": 1, "reason": "Must use Redis client"},
+          {"pattern": "from sqlalchemy", "min_occurrences": 1, "reason": "Must use SQLAlchemy for PostgreSQL"},
+          {"pattern": "hashlib\\.sha256", "min_occurrences": 1, "reason": "Must implement integrity hashing"},
+          {"pattern": "def save\\(", "min_occurrences": 1, "reason": "Must have save method"},
+          {"pattern": "def get\\(", "min_occurrences": 1, "reason": "Must have get method"},
+          {"pattern": "setex|expire", "min_occurrences": 1, "reason": "Must implement Redis TTL"},
+          {"pattern": "commit\\(\\)", "min_occurrences": 1, "reason": "Must commit database transactions"}
+        ],
+        "forbidden_patterns": [
+          {"pattern": "TODO|TBD|FIXME", "reason": "Implementation must be complete"},
+          {"pattern": "pass\\s*$", "reason": "No empty function stubs"},
+          {"pattern": "raise NotImplementedError", "reason": "All methods must be implemented"}
+        ],
+        "structural_requirements": {
+          "min_classes": 1,
+          "min_functions": 3,
+          "min_docstrings": 3
+        }
+      }
+    },
+    {
+      "file_path": "src/state/ledger_replay.py",
+      "file_type": "python",
+      "purpose": "Session ledger replay service for deterministic state rehydration with strict ordering, <80ms append latency, immutable checksum validation.",
+      "quality_gates": {
+        "min_lines": 80,
+        "max_lines": 200,
+        "required_patterns": [
+          {"pattern": "from sqlalchemy", "min_occurrences": 1, "reason": "Must use SQLAlchemy"},
+          {"pattern": "def replay", "min_occurrences": 1, "reason": "Must have replay function"},
+          {"pattern": "sorted\\(", "min_occurrences": 1, "reason": "Must enforce strict ordering"},
+          {"pattern": "commit\\(\\)", "min_occurrences": 1, "reason": "Must commit after replay"},
+          {"pattern": "if .+\\.replayed", "min_occurrences": 1, "reason": "Must check idempotency"}
+        ],
+        "forbidden_patterns": [
+          {"pattern": "TODO|TBD", "reason": "Must be complete"},
+          {"pattern": "pass\\s*$", "reason": "No empty stubs"}
+        ],
+        "structural_requirements": {
+          "min_functions": 2,
+          "min_docstrings": 2
+        }
+      }
+    },
+    {
+      "file_path": "src/orchestration/graph_builder.py",
+      "file_type": "python",
+      "purpose": "LangGraph coordination graph defining planner→coder→critic→qa→approver flow with conditional refinement loops, <1.5s execution latency, 100% policy coverage.",
+      "quality_gates": {
+        "min_lines": 100,
+        "max_lines": 300,
+        "required_patterns": [
+          {"pattern": "from langgraph", "min_occurrences": 1, "reason": "Must use LangGraph"},
+          {"pattern": "StateGraph|Graph", "min_occurrences": 1, "reason": "Must create state graph"},
+          {"pattern": "add_node", "min_occurrences": 5, "reason": "Must add planner, coder, critic, qa, approver nodes"},
+          {"pattern": "add_edge", "min_occurrences": 3, "reason": "Must connect nodes"},
+          {"pattern": "add_conditional_edges", "min_occurrences": 1, "reason": "Must implement conditional refinement loop"},
+          {"pattern": "def build_graph", "min_occurrences": 1, "reason": "Must have graph builder function"}
+        ],
+        "forbidden_patterns": [
+          {"pattern": "TODO|TBD", "reason": "Graph must be complete"},
+          {"pattern": "pass\\s*$", "reason": "No empty stubs"}
+        ],
+        "structural_requirements": {
+          "min_functions": 6,
+          "min_docstrings": 3
+        }
+      }
+    },
+    {
+      "file_path": "src/models/router.py",
+      "file_type": "python",
+      "purpose": "Multi-model LLM router with budget enforcement, <120ms routing latency, zero budget breaches, ≥99% failover success rate.",
+      "quality_gates": {
+        "min_lines": 120,
+        "max_lines": 300,
+        "required_patterns": [
+          {"pattern": "class ModelRouter", "min_occurrences": 1, "reason": "Must have router class"},
+          {"pattern": "async def route", "min_occurrences": 1, "reason": "Must have async route method"},
+          {"pattern": "openai|anthropic", "min_occurrences": 2, "reason": "Must support multiple providers"},
+          {"pattern": "budget", "min_occurrences": 3, "reason": "Must integrate budget enforcement"},
+          {"pattern": "estimate_cost|record", "min_occurrences": 2, "reason": "Must track costs"},
+          {"pattern": "failover|fallback", "min_occurrences": 1, "reason": "Must implement failover logic"}
+        ],
+        "forbidden_patterns": [
+          {"pattern": "TODO|TBD", "reason": "Router must be complete"},
+          {"pattern": "pass\\s*$", "reason": "No empty stubs"}
+        ],
+        "structural_requirements": {
+          "min_classes": 1,
+          "min_functions": 3,
+          "min_docstrings": 3
+        }
+      }
+    },
+    {
+      "file_path": "src/notifications/publisher.py",
+      "file_type": "python",
+      "purpose": "Notification publisher supporting webhooks, Slack, email with correlation IDs, <5s latency, ≥99.5% delivery success rate.",
+      "quality_gates": {
+        "min_lines": 80,
+        "max_lines": 200,
+        "required_patterns": [
+          {"pattern": "class NotificationPublisher", "min_occurrences": 1, "reason": "Must have publisher class"},
+          {"pattern": "async def publish", "min_occurrences": 1, "reason": "Must have async publish method"},
+          {"pattern": "correlation_id|trace_id", "min_occurrences": 2, "reason": "Must include correlation metadata"},
+          {"pattern": "httpx|aiohttp", "min_occurrences": 1, "reason": "Must use async HTTP client"},
+          {"pattern": "\\.post\\(", "min_occurrences": 1, "reason": "Must send HTTP POST requests"}
+        ],
+        "forbidden_patterns": [
+          {"pattern": "TODO|TBD", "reason": "Publisher must be complete"},
+          {"pattern": "pass\\s*$", "reason": "No empty stubs"}
+        ],
+        "structural_requirements": {
+          "min_classes": 1,
+          "min_functions": 2,
+          "min_docstrings": 2
+        }
+      }
+    },
+    {
+      "file_path": "src/finops/guardrails.py",
+      "file_type": "python",
+      "purpose": "FinOps budget enforcement with daily/monthly caps, token ceilings, alert triggers at 80% threshold, 100% enforcement success rate.",
+      "quality_gates": {
+        "min_lines": 100,
+        "max_lines": 250,
+        "required_patterns": [
+          {"pattern": "class FinOpsBudget|class Guardrails", "min_occurrences": 1, "reason": "Must have guardrails class"},
+          {"pattern": "def check_budget|def enforce", "min_occurrences": 1, "reason": "Must have enforcement method"},
+          {"pattern": "daily.*cap|monthly.*cap", "min_occurrences": 2, "reason": "Must implement daily and monthly caps"},
+          {"pattern": "alert|threshold", "min_occurrences": 2, "reason": "Must trigger alerts"},
+          {"pattern": "record|track", "min_occurrences": 1, "reason": "Must track spend"}
+        ],
+        "forbidden_patterns": [
+          {"pattern": "TODO|TBD", "reason": "Guardrails must be complete"},
+          {"pattern": "pass\\s*$", "reason": "No empty stubs"}
+        ],
+        "structural_requirements": {
+          "min_classes": 1,
+          "min_functions": 4,
+          "min_docstrings": 3
+        }
+      }
+    },
+    {
+      "file_path": "scripts/verify_packages.py",
+      "file_type": "python",
+      "purpose": "Package reality verification script checking PyPI/npm against lock files, OSV database, generating evidence/pkg_reality_report.md, <8min execution, zero unverified deps.",
+      "quality_gates": {
+        "min_lines": 150,
+        "max_lines": 400,
+        "required_patterns": [
+          {"pattern": "#!/usr/bin/env python3", "min_occurrences": 1, "reason": "Must have shebang"},
+          {"pattern": "import argparse", "min_occurrences": 1, "reason": "Must accept CLI arguments"},
+          {"pattern": "def verify", "min_occurrences": 1, "reason": "Must have verification function"},
+          {"pattern": "lockfile|requirements|package-lock", "min_occurrences": 2, "reason": "Must parse lock files"},
+          {"pattern": "pypi|npm|registry", "min_occurrences": 1, "reason": "Must check against registries"},
+          {"pattern": "osv|vulnerability", "min_occurrences": 1, "reason": "Must check OSV database"},
+          {"pattern": "sys\\.exit\\(", "min_occurrences": 1, "reason": "Must return exit codes"}
+        ],
+        "forbidden_patterns": [
+          {"pattern": "TODO|TBD", "reason": "Script must be complete"},
+          {"pattern": "pass\\s*$", "reason": "No empty stubs"}
+        ],
+        "structural_requirements": {
+          "min_functions": 3,
+          "min_docstrings": 2
+        }
+      }
+    },
+    {
+      "file_path": "scripts/check_residency.py",
+      "file_type": "python",
+      "purpose": "Data residency validation script ensuring 100% EU region compliance, checking vendor configurations, generating metrics/compliance/vendor_region_distribution.csv.",
+      "quality_gates": {
+        "min_lines": 100,
+        "max_lines": 250,
+        "required_patterns": [
+          {"pattern": "#!/usr/bin/env python3", "min_occurrences": 1, "reason": "Must have shebang"},
+          {"pattern": "import argparse", "min_occurrences": 1, "reason": "Must accept CLI arguments"},
+          {"pattern": "def check", "min_occurrences": 1, "reason": "Must have check function"},
+          {"pattern": "region|eu-|europe", "min_occurrences": 2, "reason": "Must validate EU regions"},
+          {"pattern": "yaml|json", "min_occurrences": 1, "reason": "Must parse config files"},
+          {"pattern": "csv", "min_occurrences": 1, "reason": "Must generate CSV report"},
+          {"pattern": "sys\\.exit\\(", "min_occurrences": 1, "reason": "Must return exit codes"}
+        ],
+        "forbidden_patterns": [
+          {"pattern": "TODO|TBD", "reason": "Script must be complete"},
+          {"pattern": "pass\\s*$", "reason": "No empty stubs"}
+        ],
+        "structural_requirements": {
+          "min_functions": 2,
+          "min_docstrings": 2
+        }
+      }
+    },
+    {
+      "file_path": "policies/finops.yaml",
+      "file_type": "yaml",
+      "purpose": "FinOps policy configuration defining Phase 1-3 budgets (daily: €450/650/900, monthly: €12k/16k/22k), provider token caps, alert channels at 80% threshold.",
+      "quality_gates": {
+        "min_lines": 40,
+        "max_lines": 100,
+        "required_patterns": [
+          {"pattern": "phases:", "min_occurrences": 1, "reason": "Must define phases section"},
+          {"pattern": "daily_eur_cap:", "min_occurrences": 3, "reason": "Must define daily caps for 3 phases"},
+          {"pattern": "monthly_eur_cap:", "min_occurrences": 3, "reason": "Must define monthly caps for 3 phases"},
+          {"pattern": "providers:", "min_occurrences": 1, "reason": "Must define provider limits"},
+          {"pattern": "openai:", "min_occurrences": 1, "reason": "Must include OpenAI config"},
+          {"pattern": "anthropic:", "min_occurrences": 1, "reason": "Must include Anthropic config"},
+          {"pattern": "max_tokens:", "min_occurrences": 2, "reason": "Must define token ceilings"},
+          {"pattern": "alerts:", "min_occurrences": 1, "reason": "Must define alert configuration"},
+          {"pattern": "threshold_percent: 80", "min_occurrences": 1, "reason": "Must use 80% alert threshold"}
+        ],
+        "forbidden_patterns": [
+          {"pattern": "TODO|TBD", "reason": "Policy must be complete"},
+          {"pattern": "CHANGEME", "reason": "No placeholder values"}
+        ]
+      }
+    },
+    {
+      "file_path": "configs/model_routing.yaml",
+      "file_type": "yaml",
+      "purpose": "LLM router configuration with scoring weights (cost/latency/accuracy), provider mappings for task types (planning/coding/review), failover rules.",
+      "quality_gates": {
+        "min_lines": 50,
+        "max_lines": 150,
+        "required_patterns": [
+          {"pattern": "weights:", "min_occurrences": 1, "reason": "Must define scoring weights"},
+          {"pattern": "cost:|latency:|accuracy:", "min_occurrences": 3, "reason": "Must include cost, latency, accuracy weights"},
+          {"pattern": "providers:", "min_occurrences": 1, "reason": "Must define providers section"},
+          {"pattern": "openai:", "min_occurrences": 1, "reason": "Must include OpenAI"},
+          {"pattern": "anthropic:", "min_occurrences": 1, "reason": "Must include Anthropic"},
+          {"pattern": "local:", "min_occurrences": 1, "reason": "Must include local fallback"},
+          {"pattern": "task_types:|tasks:", "min_occurrences": 1, "reason": "Must map task types"},
+          {"pattern": "planning:|coding:|review:", "min_occurrences": 3, "reason": "Must define planning, coding, review tasks"},
+          {"pattern": "failover:", "min_occurrences": 1, "reason": "Must define failover strategy"}
+        ],
+        "forbidden_patterns": [
+          {"pattern": "TODO|TBD", "reason": "Configuration must be complete"}
+        ]
+      }
+    },
+    {
+      "file_path": "configs/vendor_residency.yaml",
+      "file_type": "yaml",
+      "purpose": "Data residency configuration enforcing EU region routing, vendor-specific region endpoints, data retention flags, training data opt-out settings.",
+      "quality_gates": {
+        "min_lines": 40,
+        "max_lines": 120,
+        "required_patterns": [
+          {"pattern": "vendors:|providers:", "min_occurrences": 1, "reason": "Must define vendors section"},
+          {"pattern": "openai:", "min_occurrences": 1, "reason": "Must include OpenAI config"},
+          {"pattern": "anthropic:", "min_occurrences": 1, "reason": "Must include Anthropic config"},
+          {"pattern": "region:|endpoint:", "min_occurrences": 2, "reason": "Must specify regions/endpoints"},
+          {"pattern": "eu-|europe", "min_occurrences": 2, "reason": "Must enforce EU regions"},
+          {"pattern": "data_retention:|training_data:", "min_occurrences": 1, "reason": "Must configure data policies"},
+          {"pattern": "false|disabled|opt-out", "min_occurrences": 2, "reason": "Must disable vendor logging/training"}
+        ],
+        "forbidden_patterns": [
+          {"pattern": "TODO|TBD", "reason": "Configuration must be complete"},
+          {"pattern": "us-|us_", "reason": "Must not use US regions"}
+        ]
+      }
+    },
+    {
+      "file_path": "migrations/versions/001_create_sessions_tables.py",
+      "file_type": "python",
+      "purpose": "Alembic migration creating sessions, state_audit, state_hash_index tables with columns (id, payload, payload_hash, updated_at, replayed).",
+      "quality_gates": {
+        "min_lines": 40,
+        "max_lines": 120,
+        "required_patterns": [
+          {"pattern": "from alembic import op", "min_occurrences": 1, "reason": "Must use Alembic"},
+          {"pattern": "import sqlalchemy", "min_occurrences": 1, "reason": "Must use SQLAlchemy"},
+          {"pattern": "def upgrade\\(", "min_occurrences": 1, "reason": "Must have upgrade function"},
+          {"pattern": "def downgrade\\(", "min_occurrences": 1, "reason": "Must have downgrade function"},
+          {"pattern": "op\\.create_table\\(", "min_occurrences": 1, "reason": "Must create tables"},
+          {"pattern": "sessions|state_audit|state_hash_index", "min_occurrences": 1, "reason": "Must create session-related tables"},
+          {"pattern": "payload_hash", "min_occurrences": 1, "reason": "Must include hash column"}
+        ],
+        "forbidden_patterns": [
+          {"pattern": "TODO|TBD", "reason": "Migration must be complete"},
+          {"pattern": "pass\\s*$", "reason": "No empty functions"}
+        ]
+      }
+    },
+    {
+      "file_path": "docs/architecture/phase1_architecture.md",
+      "file_type": "markdown",
+      "purpose": "Phase 1 architecture documentation covering distributed state fabric, orchestration graph, LLM routing, notifications mesh, FinOps guardrails, data residency with diagrams, integration points, rollback procedures.",
+      "quality_gates": {
+        "min_lines": 200,
+        "max_lines": 500,
+        "required_sections": [
+          "^## Distributed State Fabric",
+          "^## Session Ledger",
+          "^## Agent Coordination Graph",
+          "^## LLM Router and Budget Guardian",
+          "^## Event Telemetry Mesh",
+          "^## FinOps Guardrails",
+          "^## Data Residency Policy",
+          "^## Package Reality Verification"
+        ],
+        "required_patterns": [
+          {"pattern": "```(python|yaml|bash)", "min_occurrences": 8, "reason": "Must include code examples"},
+          {"pattern": "Redis.*PostgreSQL", "min_occurrences": 2, "reason": "Must document state storage"},
+          {"pattern": "LangGraph", "min_occurrences": 2, "reason": "Must reference orchestration framework"},
+          {"pattern": "latency.*ms", "min_occurrences": 5, "reason": "Must include performance targets"},
+          {"pattern": "budget|FinOps", "min_occurrences": 5, "reason": "Must document budget controls"},
+          {"pattern": "EU region|data residency", "min_occurrences": 2, "reason": "Must document compliance"},
+          {"pattern": "rollback|recovery", "min_occurrences": 3, "reason": "Must include rollback procedures"}
+        ],
+        "forbidden_patterns": [
+          {"pattern": "TODO|TBD", "reason": "Documentation must be complete"}
+        ],
+        "structural_requirements": {
+          "min_code_blocks": 8,
+          "min_tables": 3,
+          "min_lists": 20
+        }
+      }
+    },
+    {
+      "file_path": "tests/integration/test_state_repository.py",
+      "file_type": "python",
+      "purpose": "Integration tests for state repository: save/get operations, cache hit ratio, integrity hashing, failover scenarios, 1000-iteration stability test.",
+      "quality_gates": {
+        "min_lines": 100,
+        "max_lines": 300,
+        "required_patterns": [
+          {"pattern": "import pytest", "min_occurrences": 1, "reason": "Must use pytest"},
+          {"pattern": "async def test_|def test_", "min_occurrences": 5, "reason": "Must have 5+ test functions"},
+          {"pattern": "assert", "min_occurrences": 10, "reason": "Must include assertions"},
+          {"pattern": "save|get", "min_occurrences": 5, "reason": "Must test save/get operations"},
+          {"pattern": "hash|integrity", "min_occurrences": 2, "reason": "Must test integrity validation"},
+          {"pattern": "redis|cache", "min_occurrences": 2, "reason": "Must test Redis caching"}
+        ],
+        "forbidden_patterns": [
+          {"pattern": "TODO|TBD", "reason": "Tests must be complete"},
+          {"pattern": "pass\\s*$", "reason": "No empty test stubs"}
+        ],
+        "structural_requirements": {
+          "min_functions": 5
+        }
+      }
+    },
+    {
+      "file_path": "tests/integration/test_orchestration.py",
+      "file_type": "python",
+      "purpose": "Integration tests for orchestration graph: state transitions, conditional refinement loop, policy enforcement, graph rebuild from snapshots.",
+      "quality_gates": {
+        "min_lines": 100,
+        "max_lines": 300,
+        "required_patterns": [
+          {"pattern": "import pytest", "min_occurrences": 1, "reason": "Must use pytest"},
+          {"pattern": "async def test_|def test_", "min_occurrences": 5, "reason": "Must have 5+ test functions"},
+          {"pattern": "assert", "min_occurrences": 10, "reason": "Must include assertions"},
+          {"pattern": "planner|coder|critic|qa", "min_occurrences": 4, "reason": "Must test all graph nodes"},
+          {"pattern": "conditional|refinement", "min_occurrences": 1, "reason": "Must test conditional logic"},
+          {"pattern": "policy", "min_occurrences": 2, "reason": "Must test policy enforcement"}
+        ],
+        "forbidden_patterns": [
+          {"pattern": "TODO|TBD", "reason": "Tests must be complete"},
+          {"pattern": "pass\\s*$", "reason": "No empty test stubs"}
+        ],
+        "structural_requirements": {
+          "min_functions": 5
+        }
+      }
+    },
+    {
+      "file_path": "tests/integration/test_model_router.py",
+      "file_type": "python",
+      "purpose": "Integration tests for LLM router: budget enforcement, provider failover, routing accuracy, latency measurement, cost tracking.",
+      "quality_gates": {
+        "min_lines": 120,
+        "max_lines": 350,
+        "required_patterns": [
+          {"pattern": "import pytest", "min_occurrences": 1, "reason": "Must use pytest"},
+          {"pattern": "async def test_|def test_", "min_occurrences": 6, "reason": "Must have 6+ test functions"},
+          {"pattern": "assert", "min_occurrences": 12, "reason": "Must include assertions"},
+          {"pattern": "budget|cap|ceiling", "min_occurrences": 3, "reason": "Must test budget enforcement"},
+          {"pattern": "failover|fallback", "min_occurrences": 2, "reason": "Must test failover"},
+          {"pattern": "cost|spend", "min_occurrences": 2, "reason": "Must test cost tracking"},
+          {"pattern": "openai|anthropic|local", "min_occurrences": 3, "reason": "Must test multiple providers"}
+        ],
+        "forbidden_patterns": [
+          {"pattern": "TODO|TBD", "reason": "Tests must be complete"},
+          {"pattern": "pass\\s*$", "reason": "No empty test stubs"}
+        ],
+        "structural_requirements": {
+          "min_functions": 6
+        }
+      }
+    },
+    {
+      "file_path": "evidence/gates/g1_architecture.json",
+      "file_type": "json",
+      "purpose": "G1 gate validation evidence: state fabric health, orchestration metrics, router accuracy, FinOps compliance, residency validation, package verification results.",
+      "quality_gates": {
+        "min_lines": 40,
+        "max_lines": 150,
+        "required_patterns": [
+          {"pattern": "\"gate\":\\s*\"G1\"", "min_occurrences": 1, "reason": "Must identify G1 gate"},
+          {"pattern": "\"phase\":\\s*\"Phase 1\"", "min_occurrences": 1, "reason": "Must identify Phase 1"},
+          {"pattern": "\"status\":\\s*\"PASS\"", "min_occurrences": 1, "reason": "Must have PASS status"},
+          {"pattern": "state_fabric|orchestration|router|finops|residency|packages", "min_occurrences": 6, "reason": "Must include all subsystem validations"},
+          {"pattern": "\"latency\"", "min_occurrences": 3, "reason": "Must include latency metrics"},
+          {"pattern": "\"evidence\"", "min_occurrences": 5, "reason": "Must reference evidence artifacts"},
+          {"pattern": "\"timestamp\"", "min_occurrences": 1, "reason": "Must be timestamped"}
+        ],
+        "forbidden_patterns": [
+          {"pattern": "\"status\":\\s*\"FAIL\"", "reason": "G1 gate must pass"},
+          {"pattern": "TODO|TBD", "reason": "Evidence must be complete"}
+        ],
+        "json_schema_validation": {
+          "strict_mode": true
+        }
+      }
+    },
+    {
+      "file_path": "metrics/performance/state_cache_latency.csv",
+      "file_type": "csv",
+      "purpose": "Redis cache latency metrics: p50/p95/p99 latencies for GET operations, target <50ms p95.",
+      "quality_gates": {
+        "min_lines": 20,
+        "csv_validation": {
+          "required_columns": ["timestamp", "operation", "latency_ms", "percentile"],
+          "min_rows": 18,
+          "no_empty_cells": true
+        },
+        "required_patterns": [
+          {"pattern": "GET", "min_occurrences": 5, "reason": "Must include GET operations"},
+          {"pattern": "p95|p99", "min_occurrences": 2, "reason": "Must include percentile measurements"}
+        ]
+      }
+    },
+    {
+      "file_path": "metrics/quality/model_routing_accuracy.csv",
+      "file_type": "csv",
+      "purpose": "LLM router accuracy metrics: correct provider selections, task types, accuracy ≥92% target.",
+      "quality_gates": {
+        "min_lines": 15,
+        "csv_validation": {
+          "required_columns": ["timestamp", "task_type", "expected_provider", "actual_provider", "correct"],
+          "min_rows": 12,
+          "no_empty_cells": true
+        },
+        "required_patterns": [
+          {"pattern": "planning|coding|review", "min_occurrences": 3, "reason": "Must cover all task types"},
+          {"pattern": "true|True|1", "min_occurrences": 10, "reason": "Must show successful routing"}
+        ]
+      }
+    },
+    {
+      "file_path": "notifications/delivery_log.csv",
+      "file_type": "csv",
+      "purpose": "Notification delivery log: timestamps, destinations, correlation IDs, success rates, latencies.",
+      "quality_gates": {
+        "min_lines": 25,
+        "csv_validation": {
+          "required_columns": ["timestamp", "destination", "correlation_id", "status", "latency_ms"],
+          "min_rows": 20,
+          "no_empty_cells": true
+        },
+        "required_patterns": [
+          {"pattern": "success|SUCCESS", "min_occurrences": 18, "reason": "Must show ≥99.5% success rate (18/20)"},
+          {"pattern": "[a-f0-9-]{36}", "min_occurrences": 20, "reason": "All notifications must have correlation IDs"}
+        ]
+      }
+    },
+    {
+      "file_path": "metrics/cost/budget_report.csv",
+      "file_type": "csv",
+      "purpose": "FinOps budget tracking: daily/monthly spend vs caps, token usage, provider distribution, Phase 1 budget €450 daily / €12k monthly.",
+      "quality_gates": {
+        "min_lines": 20,
+        "csv_validation": {
+          "required_columns": ["date", "phase", "daily_spend_eur", "daily_cap_eur", "monthly_spend_eur", "monthly_cap_eur"],
+          "min_rows": 15,
+          "no_empty_cells": true
+        },
+        "required_patterns": [
+          {"pattern": "450", "min_occurrences": 3, "reason": "Must reference Phase 1 daily cap €450"},
+          {"pattern": "12000", "min_occurrences": 2, "reason": "Must reference Phase 1 monthly cap €12k"},
+          {"pattern": "Phase 1|phase_1|1", "min_occurrences": 10, "reason": "Must track Phase 1 budget"}
+        ]
+      }
+    },
+    {
+      "file_path": "evidence/pkg_reality_report.md",
+      "file_type": "markdown",
+      "purpose": "Package verification report: 100% of dependencies validated against PyPI/npm/OSV, zero unverified packages, CVE scan results, execution <8min.",
+      "quality_gates": {
+        "min_lines": 80,
+        "max_lines": 300,
+        "required_sections": [
+          "^## Verification Summary",
+          "^## Python Dependencies",
+          "^## JavaScript Dependencies",
+          "^## Vulnerability Scan Results"
+        ],
+        "required_patterns": [
+          {"pattern": "Status:.*PASS|✅", "min_occurrences": 1, "reason": "Must show passing verification"},
+          {"pattern": "Unverified:.*0|None", "min_occurrences": 1, "reason": "Zero unverified dependencies"},
+          {"pattern": "PyPI|npm", "min_occurrences": 2, "reason": "Must check both ecosystems"},
+          {"pattern": "OSV|CVE", "min_occurrences": 2, "reason": "Must include vulnerability scan"},
+          {"pattern": "Execution time:.*[0-7].*min", "min_occurrences": 1, "reason": "Must complete within 8 minutes"}
+        ],
+        "forbidden_patterns": [
+          {"pattern": "FAIL|❌", "reason": "Verification must pass"},
+          {"pattern": "TODO|TBD", "reason": "Report must be complete"}
+        ],
+        "structural_requirements": {
+          "min_tables": 2,
+          "min_lists": 5
+        }
+      }
+    }
+  ],
+
+  "cross_file_validations": [
+    {
+      "validation_name": "budget_consistency",
+      "description": "Phase 1 budget (€450 daily, €12,000 monthly) must be consistent across policy and tracking",
+      "files": [
+        "policies/finops.yaml",
+        "metrics/cost/budget_report.csv"
+      ],
+      "validation_rule": "Both files must reference Phase 1 daily cap of €450 and monthly cap of €12,000"
+    },
+    {
+      "validation_name": "evidence_paths_exist",
+      "description": "All evidence paths referenced in g1_architecture.json must exist",
+      "files": [
+        "evidence/gates/g1_architecture.json",
+        "metrics/performance/state_cache_latency.csv",
+        "metrics/quality/model_routing_accuracy.csv",
+        "notifications/delivery_log.csv",
+        "metrics/cost/budget_report.csv",
+        "evidence/pkg_reality_report.md"
+      ],
+      "validation_rule": "G1 gate evidence file must reference all Phase 1 metric files and they must exist"
+    },
+    {
+      "validation_name": "router_config_alignment",
+      "description": "Router implementation must align with config and budget policy",
+      "files": [
+        "src/models/router.py",
+        "configs/model_routing.yaml",
+        "policies/finops.yaml"
+      ],
+      "validation_rule": "Router code must reference providers defined in config and respect budgets from policy"
+    },
+    {
+      "validation_name": "test_coverage_complete",
+      "description": "Integration tests must cover all major components",
+      "files": [
+        "tests/integration/test_state_repository.py",
+        "tests/integration/test_orchestration.py",
+        "tests/integration/test_model_router.py",
+        "src/state/repository.py",
+        "src/orchestration/graph_builder.py",
+        "src/models/router.py"
+      ],
+      "validation_rule": "Each major implementation module must have corresponding integration test file"
+    }
+  ],
+
+  "definition_of_done": [
+    {
+      "criterion": "all_deliverables_present",
+      "description": "All 22 deliverables exist at specified paths",
+      "validation": "automated_file_check"
+    },
+    {
+      "criterion": "quality_gates_passed",
+      "description": "All quality gates (line counts, patterns, structure) pass for every deliverable",
+      "validation": "automated_contract_validator"
+    },
+    {
+      "criterion": "cross_file_validations_passed",
+      "description": "Budget consistency, evidence paths, config alignment, test coverage all validated",
+      "validation": "automated_cross_file_checker"
+    },
+    {
+      "criterion": "zero_forbidden_patterns",
+      "description": "No TODO, TBD, FIXME, pass stubs, or NotImplementedError found in any deliverable",
+      "validation": "automated_pattern_scanner"
+    },
+    {
+      "criterion": "integration_tests_pass",
+      "description": "All integration tests execute with 100% pass rate",
+      "validation": "pytest_execution"
+    },
+    {
+      "criterion": "g1_gate_evidence_generated",
+      "description": "G1 gate validation evidence generated with PASS status",
+      "validation": "evidence_file_validation"
+    }
+  ],
+
+  "validation_script": "scripts/validate_contract.py",
+  "report_output": "evidence/validation/phase1_contract_validation.json",
+  "gate_identifier": "G1",
+  "phase_identifier": "Phase 1",
+  "estimated_effort_hours": 120,
+  "dependency_phases": ["Phase 0"],
+  
+  "enforcement_rules": {
+    "iteration_limit": 2,
+    "iteration_limit_rationale": "Maximum 2 attempts to deliver Phase 1. First attempt uses full instructions. If first attempt fails validation, one revision allowed. Second failure triggers project pause and gap analysis per Phase 0 rebuild decision precedent.",
+    "failure_consequence": "Project pause, root cause analysis, methodology review",
+    "success_criteria": "Exit code 0 from validate_contract.py with zero quality gate failures"
+  }
+}

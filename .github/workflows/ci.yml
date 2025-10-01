@@ -27,7 +27,13 @@ jobs:
       - name: Run tests
         run: |
           if [ -d tests ]; then
-            python -m pytest
+            python -m pytest --maxfail=5
+            exit_code=$?
+            if [ $exit_code -eq 5 ]; then
+              echo "No tests collected yet (Phase 0 foundation)"
+              exit 0
+            fi
+            exit $exit_code
           else
             echo "No tests directory present" && exit 0
           fi

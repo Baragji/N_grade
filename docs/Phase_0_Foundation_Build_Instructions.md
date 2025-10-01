@@ -1,1053 +1,916 @@
-# Phase 0: Foundation Setup Build Instructions
-**Autonomous AI Coding System — Incremental Build Strategy**
+# Phase 0 Foundation Build Instructions
+## ⚠️ CONTRACT-BASED DELIVERY - ZERO TOLERANCE ENFORCEMENT
+
+**READ THIS ENTIRE DOCUMENT BEFORE STARTING WORK.**
 
 ---
 
-## 📋 Document Information
+## 🎯 CRITICAL INFORMATION
 
-**Owner:** Yousef Baragji  
-**Version:** 1.0  
-**Date:** 2025-01-XX  
-**Target Audience:** AI Assistant executing build tasks  
-**Estimated Duration:** 1-2 weeks  
-**Gate Target:** G0 Foundation Ready
+### Contract File
+```
+/contracts/phase_0_foundation.contract.json
+```
 
----
+### Validation Command
+```bash
+python3 scripts/validate_contract.py \
+  contracts/phase_0_foundation.contract.json \
+  --report-path evidence/validation/phase0_contract_validation.json
+```
 
-## 🎯 Mission
-
-Bootstrap the autonomous AI coding system repository from current state to **G0 Foundation Ready** gate compliance. This phase establishes the infrastructure scaffolding, development environment, CI/CD foundation, and governance baseline that all subsequent phases will build upon.
-
-**G0 Definition:** Repository bootstrapped, CI online, Docker services healthy, branch protection enforced, strategic charter approved.
-
----
-
-## 📚 Context & Prerequisites
-
-### Required Reading
-You must review these documents before beginning work:
-
-1. **`/docs/00_Plans_&_Data/autonomous_ai_roadmap_v2.md`**  
-   - Read Phase 0 section (lines 71-249)
-   - Understand G0 gate criteria
-   - Review canonical evidence paths
-
-2. **`/docs/00_Plans_&_Data/autonomous_ai_coding_system_taxonomy_ssot_v1.2.md`**  
-   - Focus on Priority=Required functions
-   - Note evidence artifact paths for G0/G1 gates
-
-3. **`/docs/Workflows/WORKFLOW_ANALYSIS_REPORT.md`**  
-   - Review Merge Strategy (lines 379-403)
-   - Understand adoption roadmap Phase 0
-
-4. **`/docs/Workflows/01_project-Agentic_prompt_guide/Gap_Analysis_Missing_Best_Practices.md`**  
-   - Understand TDD requirements (CRITICAL)
-   - Note iteration limits (2-failure rule)
-   - Review evidence requirements
-
-### Current Repository State
-- Root: `/Users/Yousef_1/Coding/N_grade/`
-- Existing structure: `executor-mvp/`, `docs/`, `scripts/`, partial planning documentation
-- **No formal repository structure yet** — you will create it
-- Git repository initialized but no branch protection
+### Acceptance Criteria
+- ✅ Validator MUST exit with code `0` (ACCEPTED)
+- ❌ If exit code is `1` (REJECTED), delivery will be sent back for fixes
+- 🚫 **NO EXCEPTIONS. NO NEGOTIATION.**
 
 ---
 
-## 🏆 Best Practices to Incorporate
+## 📋 MANDATORY CONTRACT ENFORCEMENT
 
-### From Gap Analysis (ALL MANDATORY)
-1. **✅ TDD Mandatory:** All code must follow RED→GREEN→REFACTOR cycle
-2. **✅ Evidence Required:** Every task must produce verifiable artifacts
-3. **✅ Iteration Limits:** Max 2 attempts before human escalation
-4. **✅ Coverage Delta:** Report if ±5% change detected
-5. **✅ DoD Checklist Tables:** Use ✅/❌ format in all reports
-6. **✅ Context Discipline:** Target specific files, avoid repo dumps
-7. **✅ Patch Regeneration:** Use ±3 context lines on apply failures
+You are receiving a **CONTRACT-BASED DELIVERY REQUEST** with **ZERO TOLERANCE** for incomplete work.
 
-### From Roadmap v2
-- **Canonical Evidence Paths:** All artifacts must use standard paths
-- **Gate Framework:** G0 must be passed before G1 work begins
-- **Validation Process:** Every subsection has explicit validation steps
-- **Reproducible Scripts:** Manual steps must be scripted
+### What This Means
 
-### From Merge Strategy
-- **Layer UMCA governance** (charter, RACI, compliance)
-- **Prepare for H3A state suite** (directory structure)
-- **Enable N-Grade contracts** (validation scripts)
-- **Support EXE MVP ergonomics** (session rituals)
+1. **Read the Contract First**
+   - Open `contracts/phase_0_foundation.contract.json`
+   - Understand ALL `quality_gates` (MANDATORY requirements)
+   - Note `forbidden_patterns` (trigger AUTOMATIC REJECTION)
+   - Check `required_patterns` (content that MUST appear)
+   - Review `definition_of_done` (ALL must be `true` for acceptance)
+
+2. **Self-Validate Before Submission**
+   - Run validator yourself BEFORE submitting
+   - Fix ALL failures until exit code is `0`
+   - DO NOT DELIVER until validation passes
+
+3. **Structured Output Required**
+   - Generate machine-readable validation report
+   - No prose excuses if validation fails
+   - Status must be objective: PASS or FAIL
 
 ---
 
-## 📝 Detailed Task Breakdown
+## 🎓 REQUIRED READING (Before You Start)
 
-## Task 0.0: Strategic Kick-off and Charter Approval
+You MUST read these documents to understand context and standards:
 
-### Objective
-Create strategic charter documenting problem statement, success criteria, budget limits (€250k/6mo), compliance obligations (EU AI Act GPAI), and stakeholder RACI.
+1. **`/docs/00_Plans_&_Data/autonomous_ai_roadmap_v2.md`**
+   - Focus: Phase 0 sections, gate criteria, evidence paths
+   - Why: Defines 26-week timeline, 9 phases, canonical directory structure
 
-### Inputs
-- Review existing: `/docs/00_Plans_&_Data/spec.md`
-- Review existing: `/docs/00_Plans_&_Data/autonomous_ai_roadmap_v2.md`
-- Review existing: `/docs/governing/*.md`
+2. **`/docs/00_Plans_&_Data/autonomous_ai_coding_system_taxonomy_ssot_v1.2.md`**
+   - Focus: Functions #17, #21, #36, #40 (Priority=Required, Gate=G0-G2)
+   - Why: Defines capability taxonomy that Phase 0 must support
 
-### Outputs Required
+3. **`/docs/Workflows/01_project-Agentic_prompt_guide/Gap_Analysis_Missing_Best_Practices.md`**
+   - Focus: 7 critical best practices (TDD, iteration limits, evidence requirements, DoD tables)
+   - Why: Defines quality standards for all deliverables
 
-1. **`docs/strategy/charter.md`** (Markdown format)
-   - Problem statement (≤200 words)
-   - Success criteria (5-8 measurable outcomes)
-   - Budget ceiling (€250,000)
-   - Regulatory obligations (EU AI Act GPAI compliance, ISO 42001)
-   - Primary risks (3-5 with mitigations)
-   - Timeline (26 weeks, phases 0-8)
+4. **`/docs/Workflows/WORKFLOW_MERGE_PROJECT_OVERVIEW.md`**
+   - Focus: Merge strategy (UMCA governance + H3A orchestration + N-Grade validation + EXE MVP patterns)
+   - Why: Explains why we're building what we're building
 
-2. **`docs/strategy/charter.yaml`** (Machine-readable format)
-   ```yaml
-   initiative: autonomous_ai_coding_system
-   mission: >-
-     Deliver a production-grade autonomous coding platform with verifiable safety,
-     security, and compliance controls within 26 weeks.
-   budget_eur: 250000
-   stakeholders:
-     - role: Architecture Lead
-       contact: [TBD]
-     - role: Security Officer
-       contact: [TBD]
-     - role: Compliance Lead
-       contact: [TBD]
-     - role: Finance Controller
-       contact: [TBD]
-   steering_cadence_days: 7
-   success_metrics:
-     - name: charter_signoff
-       target: true
-       evidence: evidence/approvals/phase0_charter.json
-     - name: g0_gate_passed
-       target: true
-       evidence: evidence/gates/g0_foundation.json
+---
+
+## 🚀 MISSION & CONTEXT
+
+### Goal: G0 Foundation Ready
+
+**Definition:**
+- ✅ Repository bootstrapped with canonical structure (40+ directories)
+- ✅ Strategic charter approved by 4+ stakeholders
+- ✅ CI/CD pipeline online with lint, test, security workflows
+- ✅ Docker environment healthy (postgres, redis, meilisearch, app)
+- ✅ Branch protection enforced on main branch
+- ✅ All evidence artifacts generated and validated
+
+### What You're Building
+
+Phase 0 is the **FOUNDATION** for a 26-week, €250k autonomous AI coding system. You're not building the system itself - you're building the infrastructure, governance, and validation framework that the system will be built ON TOP OF.
+
+Think of it like building a construction site before building a skyscraper:
+- 🏗️ **Not building:** The skyscraper (that's Phases 1-8)
+- ✅ **Building:** Foundation, safety barriers, tool storage, inspection checkpoints
+
+---
+
+## 📦 DELIVERABLES (15 Files)
+
+Your contract requires **15 deliverables** organized into 4 groups:
+
+### Group 1: Governance & Strategy (4 files)
+1. `docs/strategy/charter.md` (200-400 lines)
+2. `docs/strategy/charter.yaml` (30-100 lines)
+3. `docs/governance/raci_phase0.csv` (12+ lines, 10+ roles)
+4. `evidence/approvals/phase0_charter.json` (10+ lines, 4+ approvals)
+
+### Group 2: Repository Structure (3 files)
+5. `scripts/bootstrap_repo.sh` (80-200 lines, creates 40+ dirs)
+6. `scripts/validate_structure.py` (50-150 lines)
+7. `docs/governance/branch_protection.md` (40-100 lines)
+
+### Group 3: Development Environment (4 files)
+8. `docker-compose.yml` (60-150 lines, 4 services)
+9. `docker/Dockerfile` (30-80 lines, multi-stage)
+10. `scripts/install_dev_tools.sh` (40-120 lines)
+11. `docs/development/environment_setup.md` (80-200 lines)
+12. `.env.example` (20-60 lines, 15+ vars)
+
+### Group 4: CI/CD Pipeline (3 files)
+13. `.github/workflows/ci.yml` (50-150 lines)
+14. `.github/workflows/security.yml` (40-120 lines)
+15. `.github/workflows/gate_validation.yml` (30-100 lines)
+
+### Group 5: Evidence Artifact (1 file)
+16. `evidence/gates/g0_foundation.json` (15+ lines)
+
+**Each file has strict quality gates in the contract. Read them carefully.**
+
+---
+
+## 🎯 QUALITY GATES SUMMARY
+
+### Forbidden Patterns (ZERO TOLERANCE)
+
+If ANY deliverable contains these, AUTOMATIC REJECTION:
+- ❌ `TODO`, `TBD`, `FIXME` — No incomplete sections
+- ❌ `(template)`, `[FILL IN]` — No placeholder markers
+- ❌ `...` — No ellipsis indicating omitted content
+- ❌ `See original`, `Refer to` — Must be standalone
+- ❌ Hardcoded weak passwords (`admin`, `root`, `123`)
+- ❌ Dangerous commands (`rm -rf /`)
+
+### Required Patterns (Minimum Thresholds)
+
+Each deliverable must meet minimum occurrence counts:
+- ✅ Code blocks (where applicable): varies by file
+- ✅ Evidence paths: `evidence/` references
+- ✅ Compliance frameworks: EU AI Act, ISO 42001, GDPR
+- ✅ Budget amounts: €250,000 total, €41,700 monthly
+- ✅ Phase references: Phase 0-8 (all 9 phases)
+- ✅ Health checks: All Docker services must have healthcheck
+
+### Structural Requirements
+
+- ✅ Scripts must have shebang (`#!/bin/bash` or `#!/usr/bin/env python3`)
+- ✅ Scripts must use safe settings (`set -euo pipefail` for bash)
+- ✅ Scripts must return proper exit codes (0=success, 1=failure)
+- ✅ Documentation must have headers, lists, code examples
+- ✅ YAML/JSON must be syntactically valid
+- ✅ CSV must have required columns and no empty cells
+
+### Cross-File Validations
+
+1. **Budget Consistency:** Charter.md EUR amount = charter.yaml `budget_eur`
+2. **Evidence Paths:** All paths in charter.yaml must exist as deliverables
+3. **Docker Env:** Variables in docker-compose.yml must exist in .env.example
+4. **Phase Timeline:** Charter must reference all 9 phases across 26 weeks
+
+---
+
+## 🛠️ IMPLEMENTATION GUIDANCE
+
+### Task 0.0: Strategic Charter & Governance (60 min)
+
+**What to Build:**
+1. `docs/strategy/charter.md` — Prose document with:
+   - Problem statement (why this system?)
+   - Success criteria (7+ measurable outcomes)
+   - Budget ceiling (€250k total, breakdown by phase if helpful)
+   - Regulatory obligations (EU AI Act GPAI, ISO 42001, GDPR)
+   - Risks & mitigations (5+ risks with mitigation strategies)
+   - Timeline (26 weeks, Phase 0-8 with week ranges)
+
+2. `docs/strategy/charter.yaml` — Machine-readable spec with:
+   - `initiative` name
+   - `mission` statement
+   - `budget_eur: 250000`
+   - `stakeholders` list (10+ roles: Architecture Lead, Security Officer, Compliance Lead, Finance Controller, Product Director, QA Manager, DevOps Lead, Data Privacy Officer, Legal Counsel, Executive Sponsor)
+   - `steering_cadence_days: 7` (weekly)
+   - `success_metrics` with evidence paths:
+     - `charter_signoff → evidence/approvals/phase0_charter.json`
+     - `g0_gate_passed → evidence/gates/g0_foundation.json`
+     - `env_bootstrap_time_hours: 2 → evidence/quality/env_bootstrap_time.json`
+     - `compliance_mapping_complete → evidence/compliance/control_mapping.json`
+
+3. `docs/governance/raci_phase0.csv` — RACI matrix:
+   ```csv
+   Activity,Architecture Lead,Security Officer,Compliance Lead,Finance Controller,Product Director,QA Manager,DevOps Lead,Data Privacy Officer,Legal Counsel,Executive Sponsor
+   Charter Approval,C,C,A,R,C,I,I,I,C,R
+   Repository Setup,A,I,I,I,I,R,R,I,I,C
+   Docker Environment,C,R,I,I,I,R,A,I,I,I
+   CI/CD Pipeline,R,A,I,I,I,R,A,I,I,C
+   Branch Protection,C,A,I,I,I,R,R,I,I,C
+   Budget Tracking,I,I,C,A,R,I,I,I,C,R
+   Compliance Mapping,C,C,A,I,C,I,I,R,A,C
+   G0 Gate Validation,R,C,C,C,A,R,C,C,C,R
+   Risk Management,C,A,C,C,R,C,C,C,A,R
+   Stakeholder Communication,C,C,C,C,A,C,C,C,C,R
    ```
+   (Minimum 10 activities, 10 roles - adjust as needed)
 
-3. **`docs/strategy/raci_phase0.csv`** (Stakeholder accountability)
-   - Minimum 10 roles with unique owners
-   - Columns: Role, Responsible, Accountable, Consulted, Informed
-   - Cover: Architecture, DevOps, Security, Compliance, Finance, Product, QA, Legal, Data Privacy, Executive Sponsor
-
-4. **`evidence/approvals/phase0_charter.json`** (Approval record)
+4. `evidence/approvals/phase0_charter.json`:
    ```json
    {
      "charter_version": "1.0",
-     "approval_date": "2025-01-XX",
+     "approval_date": "2025-01-15",
      "approvers": [
-       {"role": "Architecture Lead", "approved": true, "timestamp": "2025-01-XX"},
-       {"role": "Compliance Lead", "approved": true, "timestamp": "2025-01-XX"},
-       {"role": "Finance Controller", "approved": true, "timestamp": "2025-01-XX"},
-       {"role": "Executive Sponsor", "approved": true, "timestamp": "2025-01-XX"}
+       {"role": "Architecture Lead", "approved": true, "timestamp": "2025-01-15T10:00:00Z"},
+       {"role": "Compliance Lead", "approved": true, "timestamp": "2025-01-15T10:30:00Z"},
+       {"role": "Finance Controller", "approved": true, "timestamp": "2025-01-15T11:00:00Z"},
+       {"role": "Executive Sponsor", "approved": true, "timestamp": "2025-01-15T14:00:00Z"}
      ],
      "signed_artifact": "docs/strategy/charter.md",
-     "verification_hash": "sha256:..."
+     "verification_hash": "sha256:<generate actual SHA-256 of charter.md after creating it>"
    }
    ```
 
-### Success Criteria (DoD)
-| Criterion | Target |
-|-----------|--------|
-| Charter signed by 4+ stakeholders | ✅ Required |
-| RACI lists ≥10 unique roles | ✅ Required |
-| Budget documented (€250k) | ✅ Required |
-| Compliance obligations specified | ✅ Required |
-| Evidence file created | ✅ Required |
+**How to Generate SHA-256:**
+```bash
+# After creating charter.md, run:
+sha256sum docs/strategy/charter.md
+# Or on macOS:
+shasum -a 256 docs/strategy/charter.md
+# Copy the hash into phase0_charter.json
+```
 
-### Validation Steps
-1. ✅ Review charter.md for completeness (all sections present)
-2. ✅ Verify charter.yaml parses correctly and matches .md content
-3. ✅ Confirm RACI has no duplicate owners
-4. ✅ Check approval JSON has 4+ approvers with timestamps
-5. ✅ Calculate SHA-256 hash of charter.md and record in approval JSON
-
-### Notes
-- **Iteration Limit:** Max 2 attempts; if charter not approved, escalate
-- **Evidence Trail:** Store draft versions as `charter_draft_v1.md`, etc.
-- **TBD Placeholders:** Acceptable for Phase 0; will be filled in Phase 1
+**Success Criteria:**
+- ✅ Charter addresses all sections from contract (Problem, Success, Budget, Compliance, Risks, Timeline)
+- ✅ Charter.yaml is valid YAML with all required fields
+- ✅ RACI has 10+ roles and 10+ activities
+- ✅ Approval JSON has 4+ approvals, all `approved: true`, valid SHA-256
 
 ---
 
-## Task 0.1: Repository and Branch Protection Baseline
+### Task 0.1: Repository Structure (45 min)
 
-### Objective
-Create deterministic repository structure with canonical directories and enforce branch protection on `main` branch.
-
-### Inputs
-- Roadmap v2 canonical evidence paths (lines 20-29)
-- Taxonomy v1.2 evidence artifact locations
-- Current repo structure audit
-
-### Outputs Required
-
-1. **`scripts/bootstrap_repo.sh`** (Bash script)
+**What to Build:**
+1. `scripts/bootstrap_repo.sh` — Bash script that creates:
    ```bash
-   #!/usr/bin/env bash
-   # Bootstrap repository structure for autonomous AI coding system
+   #!/bin/bash
    set -euo pipefail
    
-   echo "🚀 Bootstrapping repository structure..."
+   # Evidence directories (from autonomous_ai_roadmap_v2.md)
+   mkdir -p evidence/gates
+   mkdir -p evidence/approvals
+   mkdir -p evidence/quality
+   mkdir -p evidence/compliance
+   mkdir -p evidence/security
+   mkdir -p evidence/metrics
+   mkdir -p evidence/artifacts
+   mkdir -p evidence/validation
    
-   # Create canonical directories
-   mkdir -p src/{agents,orchestration,models,tools,api}
-   mkdir -p tests/{unit,integration,e2e}
-   mkdir -p docs/{architecture,api,guides,ops,compliance,strategy}
-   mkdir -p evidence/{gates,static_checks,secrets_scan,release,approvals,quality,security,env}
-   mkdir -p metrics/{kpi,cost,quality,errors,usage,performance,compliance}
-   mkdir -p sbom
-   mkdir -p recovery
-   mkdir -p logs/ai_actions
-   mkdir -p siem/parsers
-   mkdir -p governance/{technical_file,dpia,control_mappings}
-   mkdir -p policies/runtime
-   mkdir -p benchmarks/{harness,results}
-   mkdir -p golden_tasks
-   mkdir -p state/{context,mdc,tkg,run}
-   mkdir -p orchestration
-   mkdir -p sessions
-   mkdir -p prompts
-   mkdir -p handoffs/{RA,AA,IA,SA,QA,DA,DBA,DOCS}
-   mkdir -p research
-   mkdir -p go_nogo
-   mkdir -p notifications
-   mkdir -p provenance
-   mkdir -p coverage
-   mkdir -p mutation
-   mkdir -p .github/{workflows,actions}
-   mkdir -p .devcontainer
-   mkdir -p deploy
-   mkdir -p env
+   # State management (from H3A Distribution)
+   mkdir -p state/sessions
+   mkdir -p state/checkpoints
+   mkdir -p state/history
    
-   # Create .keep files for empty directories
-   find src tests docs evidence metrics sbom recovery logs siem governance policies benchmarks golden_tasks state orchestration sessions prompts handoffs research go_nogo notifications provenance coverage mutation -type d -empty -exec touch {}/.keep \;
+   # Governance (from UMCA)
+   mkdir -p docs/governance
+   mkdir -p docs/strategy
+   mkdir -p docs/development
+   mkdir -p docs/architecture
+   mkdir -p docs/compliance
    
-   echo "✅ Repository structure created"
-   echo "📊 Directory count: $(find . -type d | wc -l)"
+   # Agent components (future Phase 1-2)
+   mkdir -p src/orchestrator
+   mkdir -p src/executor
+   mkdir -p src/planner
+   mkdir -p src/validator
+   mkdir -p src/state_manager
+   mkdir -p src/llm_gateway
+   
+   # Tests (TDD from Agentic Prompt Guide)
+   mkdir -p tests/unit
+   mkdir -p tests/integration
+   mkdir -p tests/fixtures
+   
+   # CI/CD
+   mkdir -p .github/workflows
+   mkdir -p .github/actions
+   
+   # Docker
+   mkdir -p docker
+   
+   # Scripts
+   mkdir -p scripts
+   
+   # Contracts (N-Grade)
+   mkdir -p contracts
+   
+   # Create README stubs
+   echo "# Evidence Directory" > evidence/README.md
+   echo "# State Management" > state/README.md
+   echo "# Governance Documentation" > docs/governance/README.md
+   # ... (create README for all major dirs)
+   
+   echo "✅ Repository structure created (40+ directories)"
    ```
 
-2. **`scripts/validate_structure.py`** (Python validation script)
+2. `scripts/validate_structure.py` — Python validator:
    ```python
    #!/usr/bin/env python3
-   """Validate repository structure against canonical requirements."""
    import json
    import sys
    from pathlib import Path
    
    REQUIRED_DIRS = [
-       "src/agents", "src/orchestration", "src/models", "src/tools", "src/api",
-       "tests/unit", "tests/integration", "tests/e2e",
-       "docs/architecture", "docs/api", "docs/guides", "docs/ops", "docs/compliance", "docs/strategy",
-       "evidence/gates", "evidence/static_checks", "evidence/secrets_scan", "evidence/release", "evidence/approvals",
-       "metrics/kpi", "metrics/cost", "metrics/quality", "metrics/performance",
-       "sbom", "recovery", "logs/ai_actions", "siem/parsers",
-       "governance/technical_file", "policies/runtime", "benchmarks/harness",
-       "state/context", "state/mdc", "orchestration", "sessions", "prompts"
+       "evidence/gates",
+       "evidence/approvals",
+       "state/sessions",
+       "docs/governance",
+       "src/orchestrator",
+       "tests/unit",
+       # ... (list all 40+ required directories)
    ]
    
-   def main():
-       root = Path.cwd()
+   def validate_structure():
+       repo_root = Path(__file__).parent.parent
        missing = []
        
        for dir_path in REQUIRED_DIRS:
-           full_path = root / dir_path
+           full_path = repo_root / dir_path
            if not full_path.exists():
                missing.append(dir_path)
        
        result = {
-           "validation_date": "2025-01-XX",
-           "root_directory": str(root),
+           "validation_type": "repository_structure",
+           "timestamp": "2025-01-15T12:00:00Z",
            "required_directories": len(REQUIRED_DIRS),
            "found_directories": len(REQUIRED_DIRS) - len(missing),
            "missing_directories": missing,
-           "status": "PASS" if not missing else "FAIL"
+           "status": "PASS" if len(missing) == 0 else "FAIL"
        }
        
-       output_path = root / "evidence/gates/g0_foundation.json"
+       output_path = repo_root / "evidence" / "validation" / "structure_validation.json"
        output_path.parent.mkdir(parents=True, exist_ok=True)
-       
        with open(output_path, 'w') as f:
            json.dump(result, f, indent=2)
        
-       print(f"✅ Validation complete: {result['status']}")
-       print(f"📄 Report: {output_path}")
+       print(f"✅ Structure validation: {result['status']}")
+       print(f"📊 Found: {result['found_directories']}/{result['required_directories']} directories")
+       if missing:
+           print(f"❌ Missing: {', '.join(missing)}")
        
-       sys.exit(0 if result['status'] == 'PASS' else 1)
+       return 0 if len(missing) == 0 else 1
    
    if __name__ == "__main__":
-       main()
+       sys.exit(validate_structure())
    ```
 
-3. **`evidence/release/branch_protection.md`** (Branch policy documentation)
-   ```markdown
-   # Branch Protection Configuration
-   
-   ## Main Branch Protection Rules
-   - **Branch:** `main`
-   - **Status Checks Required:** `ci`, `security`, `sbom`, `lint`
-   - **Require Signed Commits:** ✅ Yes
-   - **Require Linear History:** ✅ Yes
-   - **Minimum Reviews:** 2
-   - **Dismiss Stale Reviews:** ✅ Yes
-   - **Require Code Owner Review:** ✅ Yes
-   - **Restrict Push Access:** Admins only
-   - **Allow Force Pushes:** ❌ No
-   - **Allow Deletions:** ❌ No
-   
-   ## Verification
-   - Policy configured via GitHub API on: 2025-01-XX
-   - Policy snapshot captured in: evidence/release/branch_protection_snapshot.json
-   - Verified by: [Your Name]
-   
-   ## Testing
-   - Attempted unsigned commit: ❌ Blocked (expected)
-   - Attempted direct push: ❌ Blocked (expected)
-   - Pull request without CI: ❌ Blocked (expected)
-   ```
+3. `docs/governance/branch_protection.md` — Documentation:
+   - Branch protection rules for `main` and `develop`
+   - Required status checks (CI, security, gate validation)
+   - Review requirements (1+ approvals, dismiss stale reviews)
+   - Configuration examples (GitHub API, CLI, or UI)
 
-4. **Git Tag:** `v0.0-foundation`
-   - Tag initial bootstrap commit
-   - Record commit hash in `evidence/gates/g0_foundation.json`
-
-### Success Criteria (DoD)
-| Criterion | Status |
-|-----------|--------|
-| All canonical directories created | ✅ Required |
-| Validation script passes | ✅ Required |
-| Branch protection configured | ✅ Required |
-| Git tag created | ✅ Required |
-| Evidence file generated | ✅ Required |
-
-### Validation Steps
-1. ✅ Run `./scripts/bootstrap_repo.sh` and verify exit code 0
-2. ✅ Run `python3 scripts/validate_structure.py --strict` → expect PASS
-3. ✅ Check `evidence/gates/g0_foundation.json` exists with status=PASS
-4. ✅ Verify git tag exists: `git tag -l v0.0-foundation`
-5. ✅ Confirm branch protection via GitHub API (manual verification acceptable for Phase 0)
-
-### Notes
-- **TDD N/A:** No application code in this task (infrastructure only)
-- **Idempotency:** Scripts must be safe to re-run
-- **Windows Compatibility:** Not required (macOS/Linux only per spec)
+**Success Criteria:**
+- ✅ bootstrap_repo.sh creates 40+ directories
+- ✅ validate_structure.py checks all required paths
+- ✅ Branch protection doc has configuration examples
+- ✅ All scripts are idempotent (safe to re-run)
 
 ---
 
-## Task 0.2: Development Environment Provisioning
+### Task 0.2: Development Environment (60 min)
 
-### Objective
-Create reproducible development environment with Docker Compose services, developer tooling scripts, and environment variable management.
-
-### Inputs
-- Roadmap v2 section 0.2 (lines 157-212)
-- Current `executor-mvp/.env.example` file
-- Technology stack: Python (uv), Node.js (pnpm), Docker, PostgreSQL, Redis
-
-### Outputs Required
-
-1. **`docker-compose.yml`** (Root directory)
+**What to Build:**
+1. `docker-compose.yml`:
    ```yaml
-   version: "3.9"
+   version: '3.9'
+   
    services:
      app:
        build:
          context: .
          dockerfile: docker/Dockerfile
-       command: uvicorn src.api.main:app --host 0.0.0.0 --port 8000 --reload
-       environment:
-         ENVIRONMENT: development
-         DATABASE_URL: postgresql+psycopg2://app_user:dev_password_change_in_prod@postgres:5432/autonomous_ai
-         REDIS_URL: redis://redis:6379/0
-         PYTHONPATH: /app
        ports:
-         - "8000:8000"
-       volumes:
-         - ./src:/app/src
-         - ./tests:/app/tests
+         - "3000:3000"
+       environment:
+         - POSTGRES_HOST=postgres
+         - REDIS_HOST=redis
+         - MEILISEARCH_HOST=meilisearch
        depends_on:
          postgres:
            condition: service_healthy
          redis:
            condition: service_healthy
+         meilisearch:
+           condition: service_healthy
+       healthcheck:
+         test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+         interval: 30s
+         timeout: 10s
+         retries: 3
+       volumes:
+         - ./src:/app/src:ro
+         - ./output:/app/output
      
      postgres:
-       image: postgres:17-alpine
+       image: postgres:16-alpine
        environment:
-         POSTGRES_DB: autonomous_ai
-         POSTGRES_USER: app_user
-         POSTGRES_PASSWORD: dev_password_change_in_prod
+         POSTGRES_DB: ${POSTGRES_DB:-autonomous_ai}
+         POSTGRES_USER: ${POSTGRES_USER:-dbuser}
+         POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
        ports:
          - "5432:5432"
        volumes:
-         - .infra_data/postgres:/var/lib/postgresql/data
+         - postgres_data:/var/lib/postgresql/data
        healthcheck:
-         test: ["CMD-SHELL", "pg_isready -U app_user -d autonomous_ai"]
-         interval: 5s
-         timeout: 3s
-         retries: 10
+         test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-dbuser}"]
+         interval: 10s
+         timeout: 5s
+         retries: 5
      
      redis:
        image: redis:7-alpine
        ports:
          - "6379:6379"
        volumes:
-         - .infra_data/redis:/data
+         - redis_data:/data
        healthcheck:
          test: ["CMD", "redis-cli", "ping"]
-         interval: 5s
-         timeout: 3s
-         retries: 10
+         interval: 10s
+         timeout: 5s
+         retries: 5
      
      meilisearch:
        image: getmeili/meilisearch:v1.5
        environment:
+         MEILI_MASTER_KEY: ${MEILI_MASTER_KEY}
          MEILI_ENV: development
-         MEILI_MASTER_KEY: dev_master_key_change_in_prod
        ports:
          - "7700:7700"
        volumes:
-         - .infra_data/meilisearch:/meili_data
+         - meilisearch_data:/meili_data
+       healthcheck:
+         test: ["CMD", "curl", "-f", "http://localhost:7700/health"]
+         interval: 30s
+         timeout: 10s
+         retries: 3
+   
+   volumes:
+     postgres_data:
+     redis_data:
+     meilisearch_data:
+   
+   networks:
+     default:
+       name: autonomous_ai_network
    ```
 
-2. **`docker/Dockerfile`** (Application container)
+2. `docker/Dockerfile`:
    ```dockerfile
-   FROM python:3.12-slim
+   # Build stage
+   FROM node:20-alpine AS builder
+   
+   WORKDIR /build
+   COPY package*.json ./
+   RUN npm ci --only=production
+   
+   COPY src ./src
+   COPY tsconfig.json ./
+   RUN npm run build
+   
+   # Runtime stage
+   FROM node:20-alpine AS runtime
+   
+   # Create non-root user
+   RUN addgroup -g 1001 appgroup && \
+       adduser -u 1001 -G appgroup -s /bin/sh -D appuser
    
    WORKDIR /app
    
-   # Install system dependencies
-   RUN apt-get update && apt-get install -y \
-       git \
-       curl \
-       && rm -rf /var/lib/apt/lists/*
+   # Copy built artifacts
+   COPY --from=builder --chown=appuser:appgroup /build/node_modules ./node_modules
+   COPY --from=builder --chown=appuser:appgroup /build/dist ./dist
+   COPY --chown=appuser:appgroup package.json ./
    
-   # Install uv
-   RUN curl -LsSf https://astral.sh/uv/install.sh | sh
-   ENV PATH="/root/.cargo/bin:$PATH"
+   # Switch to non-root user
+   USER appuser
    
-   # Copy dependency files
-   COPY pyproject.toml uv.lock* ./
+   EXPOSE 3000
    
-   # Install dependencies
-   RUN uv pip install --system -r pyproject.toml
+   HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+     CMD node -e "require('http').get('http://localhost:3000/health', (r) => process.exit(r.statusCode === 200 ? 0 : 1))"
    
-   # Copy application code
-   COPY . .
-   
-   EXPOSE 8000
-   
-   CMD ["uvicorn", "src.api.main:app", "--host", "0.0.0.0", "--port", "8000"]
+   CMD ["node", "dist/server.js"]
    ```
 
-3. **`scripts/install_dev_tools.sh`** (Developer tooling)
+3. `scripts/install_dev_tools.sh`:
+   - Check for Docker, install if missing
+   - Check for Python 3.10+, install if missing
+   - Check for Node.js 20+, install if missing
+   - Install pre-commit hooks
+   - Verify installations
+
+4. `docs/development/environment_setup.md`:
+   - Prerequisites list (OS, hardware, network)
+   - Installation steps (numbered, with commands)
+   - Verification commands (`docker compose ps`, `python --version`, etc.)
+   - Troubleshooting common issues
+   - **Bootstrap time target: <2 hours**
+
+5. `.env.example`:
    ```bash
-   #!/usr/bin/env bash
-   # Install development tools for autonomous AI system
-   set -euo pipefail
+   # Database Configuration
+   POSTGRES_HOST=postgres
+   POSTGRES_PORT=5432
+   POSTGRES_DB=autonomous_ai
+   POSTGRES_USER=dbuser
+   POSTGRES_PASSWORD=CHANGE_ME_STRONG_PASSWORD
    
-   echo "🔧 Installing development tools..."
+   # Redis Configuration
+   REDIS_HOST=redis
+   REDIS_PORT=6379
+   REDIS_PASSWORD=CHANGE_ME_REDIS_PASSWORD
    
-   # Detect OS
-   OS="$(uname -s)"
+   # Meilisearch Configuration
+   MEILI_HOST=http://meilisearch:7700
+   MEILI_MASTER_KEY=CHANGE_ME_MEILI_KEY
    
-   # Install uv (Python package manager)
-   if ! command -v uv &> /dev/null; then
-       echo "📦 Installing uv..."
-       curl -LsSf https://astral.sh/uv/install.sh | sh
-   fi
+   # Application Configuration
+   NODE_ENV=development
+   PORT=3000
+   LOG_LEVEL=info
    
-   # Install pre-commit
-   if ! command -v pre-commit &> /dev/null; then
-       echo "🎣 Installing pre-commit..."
-       pip install pre-commit
-   fi
+   # LLM Configuration (Phase 1+)
+   LLM_PROVIDER=openai
+   OPENAI_API_KEY=sk-...
+   ANTHROPIC_API_KEY=sk-ant-...
    
-   # Install Node.js tools (if Node installed)
-   if command -v npm &> /dev/null; then
-       echo "📦 Installing pnpm..."
-       npm install -g pnpm
-   fi
-   
-   # Install Git hooks
-   if [ -f ".git/config" ]; then
-       echo "🎣 Installing Git hooks..."
-       pre-commit install
-   fi
-   
-   # Verify installations
-   echo ""
-   echo "✅ Verification:"
-   uv --version && echo "  ✅ uv installed"
-   pre-commit --version && echo "  ✅ pre-commit installed"
-   docker --version && echo "  ✅ Docker installed" || echo "  ⚠️  Docker not found"
-   
-   echo ""
-   echo "🎉 Development tools installation complete!"
+   # Evidence Storage
+   EVIDENCE_PATH=./evidence
+   STATE_PATH=./state
    ```
 
-4. **`docs/ops/environment_reference.md`** (Environment documentation)
-   ```markdown
-   # Environment Reference
-   
-   ## Environment Variables
-   
-   ### Application
-   - `ENVIRONMENT`: `development` | `staging` | `production`
-   - `DATABASE_URL`: PostgreSQL connection string
-   - `REDIS_URL`: Redis connection string
-   - `PYTHONPATH`: Python module path (set to `/app` in container)
-   
-   ### API Keys (Secrets)
-   - `OPENAI_API_KEY`: OpenAI API key for GPT-5
-   - `ANTHROPIC_API_KEY`: Anthropic API key for Claude
-   - `GITHUB_TOKEN`: GitHub PAT for API access
-   
-   ### Service Endpoints
-   - `MEILISEARCH_URL`: http://meilisearch:7700
-   - `MEILISEARCH_KEY`: Master key for Meilisearch
-   
-   ## Local Development Setup
-   
-   1. Copy `.env.example` to `.env`:
-      ```bash
-      cp .env.example .env
-      ```
-   
-   2. Fill in required secrets:
-      ```bash
-      # .env
-      OPENAI_API_KEY=sk-...
-      ANTHROPIC_API_KEY=sk-ant-...
-      GITHUB_TOKEN=ghp_...
-      ```
-   
-   3. Generate hash for audit trail:
-      ```bash
-      shasum -a 256 .env | awk '{print $1}' > evidence/security/env_hashes.json
-      ```
-   
-   ## Security Notes
-   - **Never commit `.env` files** (already in `.gitignore`)
-   - Rotate secrets quarterly (see `docs/ops/secret_rotation.md`)
-   - Use OIDC for cloud providers (avoid long-lived credentials)
-   ```
+**Success Criteria:**
+- ✅ docker-compose.yml has 4 services, all with health checks
+- ✅ Dockerfile uses multi-stage build, non-root user
+- ✅ .env.example has 15+ variables with comments
+- ✅ Environment setup doc estimates <2 hour bootstrap
 
-5. **`.env.example`** (Template for secrets)
-   ```bash
-   # Environment
-   ENVIRONMENT=development
-   
-   # Database
-   DATABASE_URL=postgresql+psycopg2://app_user:dev_password@localhost:5432/autonomous_ai
-   REDIS_URL=redis://localhost:6379/0
-   
-   # API Keys (REPLACE WITH YOUR KEYS)
-   OPENAI_API_KEY=sk-your-key-here
-   ANTHROPIC_API_KEY=sk-ant-your-key-here
-   GITHUB_TOKEN=ghp_your-token-here
-   
-   # Meilisearch
-   MEILISEARCH_URL=http://localhost:7700
-   MEILISEARCH_KEY=dev_master_key
-   ```
+---
 
-6. **`evidence/security/env_hashes.json`** (Audit trail)
+### Task 0.3: CI/CD Pipeline (45 min)
+
+**What to Build:**
+1. `.github/workflows/ci.yml`:
+   - Triggers: push to main, pull_request
+   - Jobs: lint, test, build
+   - Runs: ESLint, Prettier, vitest, TypeScript compile
+   - Uploads: test results, coverage reports
+   - Target runtime: <12 minutes
+
+2. `.github/workflows/security.yml`:
+   - Triggers: push to main, schedule (weekly)
+   - Jobs: SAST (Semgrep or CodeQL), dependency scan (Trivy), SBOM generation (Syft)
+   - Uploads: SARIF reports, SBOM artifacts
+
+3. `.github/workflows/gate_validation.yml`:
+   - Triggers: workflow_dispatch (manual), push to main
+   - Jobs: validate gate criteria, check evidence artifacts
+   - Runs: `python scripts/validate_gates.py` (you'll create this in future phase)
+   - Uploads: gate validation reports
+
+**Success Criteria:**
+- ✅ CI workflow includes lint, test, build jobs
+- ✅ Security workflow includes SAST, dependency scan, SBOM
+- ✅ Gate validation workflow checks evidence paths
+- ✅ All workflows upload artifacts
+
+---
+
+### Task 0.4: G0 Gate Evidence (15 min)
+
+**What to Build:**
+1. `evidence/gates/g0_foundation.json`:
    ```json
    {
-     "env_file_hash": "sha256:...",
-     "hashed_at": "2025-01-XX",
-     "verification_note": "Hash computed without exposing secret values"
+     "gate_id": "G0",
+     "gate_name": "Foundation Ready",
+     "status": "PASS",
+     "validation_timestamp": "2025-01-15T16:00:00Z",
+     "criteria": [
+       {
+         "criterion": "Repository structure complete",
+         "status": "PASS",
+         "evidence": "evidence/validation/structure_validation.json"
+       },
+       {
+         "criterion": "Strategic charter approved",
+         "status": "PASS",
+         "evidence": "evidence/approvals/phase0_charter.json"
+       },
+       {
+         "criterion": "Docker services healthy",
+         "status": "PASS",
+         "evidence": "docker compose ps shows 4/4 healthy"
+       },
+       {
+         "criterion": "CI/CD pipelines configured",
+         "status": "PASS",
+         "evidence": ".github/workflows/ contains 3 workflows"
+       },
+       {
+         "criterion": "Branch protection enforced",
+         "status": "PASS",
+         "evidence": "docs/governance/branch_protection.md"
+       },
+       {
+         "criterion": "Environment bootstrap time <2 hours",
+         "status": "PASS",
+         "evidence": "docs/development/environment_setup.md"
+       },
+       {
+         "criterion": "All deliverables present",
+         "status": "PASS",
+         "evidence": "Contract validator returned exit code 0"
+       },
+       {
+         "criterion": "No forbidden patterns found",
+         "status": "PASS",
+         "evidence": "Contract validation report"
+       }
+     ],
+     "gate_approved_by": "Automated Validator",
+     "next_gate": "G1",
+     "next_phase": "Phase 1 - Core Architecture"
    }
    ```
 
-### Success Criteria (DoD)
-| Criterion | Status |
-|-----------|--------|
-| `docker compose up` completes <60s | ✅ Required |
-| All services report `healthy` | ✅ Required |
-| Dev tools script exits 0 | ✅ Required |
-| Environment docs complete | ✅ Required |
-| `.env` hash recorded | ✅ Required |
-
-### Validation Steps
-1. ✅ Run `docker compose up -d` and time completion
-2. ✅ Run `docker compose ps` → verify all services `healthy`
-3. ✅ Run `./scripts/install_dev_tools.sh --verify`
-4. ✅ Verify `.env.example` exists and is documented
-5. ✅ Check `evidence/security/env_hashes.json` exists
-
-### Notes
-- **Secrets Management:** Use placeholders in `.env.example`, actual keys in ignored `.env`
-- **Performance:** If services take >60s, document in issues
-- **TDD N/A:** Infrastructure task (no application logic)
+**Success Criteria:**
+- ✅ G0 gate JSON has all 8 criteria marked PASS
+- ✅ Status field is "PASS"
+- ✅ Evidence paths reference actual deliverables
 
 ---
 
-## Task 0.3: CI/CD Pipeline Foundation
+## ✅ SELF-VALIDATION CHECKLIST
 
-### Objective
-Create GitHub Actions CI/CD pipeline with lint, test, security scan, and SBOM generation jobs.
+Before submitting, YOU MUST:
 
-### Inputs
-- Roadmap v2 section 0.3 (lines 213-249)
-- Gap Analysis TDD requirements
-- Current `executor-mvp/.github/workflows/*` (if exists)
-
-### Outputs Required
-
-1. **`.github/workflows/ci.yml`** (Main CI pipeline)
-   ```yaml
-   name: Autonomous AI CI
-   
-   on:
-     push:
-       branches: [main, develop, release/*]
-     pull_request:
-       paths-ignore:
-         - 'docs/**'
-         - '*.md'
-   
-   env:
-     PYTHON_VERSION: "3.12"
-     NODE_VERSION: "20"
-   
-   jobs:
-     lint:
-       name: Lint & Format
-       runs-on: ubuntu-latest
-       steps:
-         - uses: actions/checkout@v4
-         
-         - name: Set up Python
-           uses: actions/setup-python@v5
-           with:
-             python-version: ${{ env.PYTHON_VERSION }}
-         
-         - name: Install uv
-           run: curl -LsSf https://astral.sh/uv/install.sh | sh
-         
-         - name: Install dependencies
-           run: |
-             uv pip install --system ruff mypy bandit
-         
-         - name: Run ruff
-           run: |
-             ruff check . --output-format=text > evidence/static_checks/ruff.txt || true
-             ruff check .
-         
-         - name: Run mypy
-           run: |
-             mypy src --strict > evidence/static_checks/mypy.txt || true
-             mypy src --strict
-         
-         - name: Upload lint results
-           uses: actions/upload-artifact@v4
-           if: always()
-           with:
-             name: lint-results
-             path: evidence/static_checks/
-     
-     security:
-       name: Security Scans
-       runs-on: ubuntu-latest
-       steps:
-         - uses: actions/checkout@v4
-           with:
-             fetch-depth: 0  # Full history for gitleaks
-         
-         - name: Run Gitleaks
-           uses: gitleaks/gitleaks-action@v2
-           env:
-             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-         
-         - name: Run Bandit
-           run: |
-             pip install bandit
-             bandit -r src -f txt -o evidence/secrets_scan/bandit.txt || true
-         
-         - name: Upload security results
-           uses: actions/upload-artifact@v4
-           if: always()
-           with:
-             name: security-results
-             path: evidence/secrets_scan/
-     
-     test:
-       name: Test & Coverage
-       runs-on: ubuntu-latest
-       services:
-         postgres:
-           image: postgres:17-alpine
-           env:
-             POSTGRES_DB: test_db
-             POSTGRES_USER: test_user
-             POSTGRES_PASSWORD: test_pass
-           options: >-
-             --health-cmd pg_isready
-             --health-interval 5s
-             --health-timeout 3s
-             --health-retries 10
-           ports:
-             - 5432:5432
-         
-         redis:
-           image: redis:7-alpine
-           options: >-
-             --health-cmd "redis-cli ping"
-             --health-interval 5s
-             --health-timeout 3s
-             --health-retries 10
-           ports:
-             - 6379:6379
-       
-       steps:
-         - uses: actions/checkout@v4
-         
-         - name: Set up Python
-           uses: actions/setup-python@v5
-           with:
-             python-version: ${{ env.PYTHON_VERSION }}
-         
-         - name: Install dependencies
-           run: |
-             curl -LsSf https://astral.sh/uv/install.sh | sh
-             uv pip install --system -r pyproject.toml
-             uv pip install --system pytest pytest-cov pytest-xdist
-         
-         - name: Run unit tests
-           run: |
-             pytest tests/unit \
-               --maxfail=1 \
-               --disable-warnings \
-               --cov=src \
-               --cov-report=xml:coverage/coverage.xml \
-               --cov-report=term \
-               -v
-         
-         - name: Run integration tests
-           env:
-             DATABASE_URL: postgresql://test_user:test_pass@localhost:5432/test_db
-             REDIS_URL: redis://localhost:6379/0
-           run: |
-             pytest tests/integration \
-               --maxfail=1 \
-               --disable-warnings \
-               -v
-         
-         - name: Upload coverage
-           uses: actions/upload-artifact@v4
-           with:
-             name: coverage-report
-             path: coverage/
-         
-         - name: Coverage comment
-           uses: py-cov-action/python-coverage-comment-action@v3
-           with:
-             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-             MINIMUM_GREEN: 85
-             MINIMUM_ORANGE: 70
-     
-     sbom:
-       name: Generate SBOM
-       runs-on: ubuntu-latest
-       steps:
-         - uses: actions/checkout@v4
-         
-         - name: Install CycloneDX
-           run: pip install cyclonedx-bom
-         
-         - name: Generate SBOM
-           run: |
-             cyclonedx-py -o sbom/SBOM.json --format json
-         
-         - name: Upload SBOM
-           uses: actions/upload-artifact@v4
-           with:
-             name: sbom
-             path: sbom/SBOM.json
-   ```
-
-2. **`.github/actions/setup-python-and-node/action.yml`** (Shared setup action)
-   ```yaml
-   name: 'Setup Python and Node'
-   description: 'Composite action to set up Python, Node, and dependencies'
-   
-   runs:
-     using: "composite"
-     steps:
-       - name: Set up Python
-         uses: actions/setup-python@v5
-         with:
-           python-version: "3.12"
-           cache: 'pip'
-       
-       - name: Set up Node
-         uses: actions/setup-node@v4
-         with:
-           node-version: "20"
-           cache: 'pnpm'
-       
-       - name: Install uv
-         shell: bash
-         run: curl -LsSf https://astral.sh/uv/install.sh | sh
-       
-       - name: Cache uv packages
-         uses: actions/cache@v4
-         with:
-           path: ~/.cache/uv
-           key: ${{ runner.os }}-uv-${{ hashFiles('pyproject.toml') }}
-   ```
-
-3. **`.github/workflows/gate-validation.yml`** (Gate enforcement)
-   ```yaml
-   name: Gate Validation
-   
-   on:
-     pull_request:
-       types: [opened, synchronize, reopened]
-   
-   jobs:
-     validate-gates:
-       name: Validate G0-G8 Gates
-       runs-on: ubuntu-latest
-       steps:
-         - uses: actions/checkout@v4
-         
-         - name: Check G0 Foundation
-           run: |
-             if [ -f "evidence/gates/g0_foundation.json" ]; then
-               echo "✅ G0 evidence found"
-               cat evidence/gates/g0_foundation.json
-             else
-               echo "❌ G0 evidence missing"
-               exit 1
-             fi
-         
-         - name: Validate evidence structure
-           run: |
-             python3 scripts/validate_structure.py
-   ```
-
-### Success Criteria (DoD)
-| Criterion | Status |
-|-----------|--------|
-| CI pipeline completes <12min | ✅ Required |
-| All jobs pass (lint, test, security, sbom) | ✅ Required |
-| Coverage report generated | ✅ Required |
-| SBOM artifact uploaded | ✅ Required |
-| Gate validation workflow created | ✅ Required |
-
-### Validation Steps
-1. ✅ Create test PR to trigger pipeline
-2. ✅ Verify all jobs complete successfully
-3. ✅ Check artifacts uploaded (coverage, sbom, lint results)
-4. ✅ Confirm pipeline runtime <12 minutes
-5. ✅ Verify branch protection enforces CI checks
-
-### Notes
-- **TDD:** This task creates infrastructure for TDD validation
-- **Iteration Limit:** If CI configuration fails 2x, escalate with logs
-- **Cache Optimization:** Use actions/cache for dependencies
-
----
-
-## 📊 Evidence Checklist
-
-After completing all tasks, verify these artifacts exist:
-
-### Strategic Documents
-- [ ] `docs/strategy/charter.md`
-- [ ] `docs/strategy/charter.yaml`
-- [ ] `docs/strategy/raci_phase0.csv`
-- [ ] `evidence/approvals/phase0_charter.json`
-
-### Repository Structure
-- [ ] `scripts/bootstrap_repo.sh`
-- [ ] `scripts/validate_structure.py`
-- [ ] `evidence/gates/g0_foundation.json`
-- [ ] `evidence/release/branch_protection.md`
-- [ ] Git tag: `v0.0-foundation`
-
-### Development Environment
-- [ ] `docker-compose.yml`
-- [ ] `docker/Dockerfile`
-- [ ] `scripts/install_dev_tools.sh`
-- [ ] `docs/ops/environment_reference.md`
-- [ ] `.env.example`
-- [ ] `evidence/security/env_hashes.json`
-
-### CI/CD Pipeline
-- [ ] `.github/workflows/ci.yml`
-- [ ] `.github/workflows/gate-validation.yml`
-- [ ] `.github/actions/setup-python-and-node/action.yml`
-- [ ] CI pipeline passing (verified via PR)
-
----
-
-## ✅ G0 Gate Validation
-
-### G0 Success Criteria (All Required)
-1. ✅ Repository contains all canonical directories (validated by `validate_structure.py`)
-2. ✅ Branch protection configured with 4+ status checks
-3. ✅ Docker services start <60s and report healthy
-4. ✅ CI pipeline completes <12min with all jobs passing
-5. ✅ Strategic charter approved by 4+ stakeholders
-6. ✅ RACI matrix has ≥10 unique roles
-7. ✅ Initial commit tagged `v0.0-foundation`
-8. ✅ Evidence file `evidence/gates/g0_foundation.json` validates PASS
-
-### Gate Validation Command
+### 1. Run Contract Validator
 ```bash
-# Run this command to validate G0 completion
-python3 scripts/validate_structure.py && \
-docker compose up -d && \
-docker compose ps | grep healthy && \
-test -f evidence/approvals/phase0_charter.json && \
-test -f evidence/gates/g0_foundation.json && \
-git tag -l v0.0-foundation && \
-echo "✅ G0 GATE PASSED"
+python3 scripts/validate_contract.py contracts/phase_0_foundation.contract.json
+```
+
+**Expected output:**
+```
+✅ ACCEPTED
+All quality gates passed.
+Exit code: 0
+```
+
+**If you see exit code 1:**
+- Read the validation report at `evidence/validation/phase0_contract_validation.json`
+- Fix ALL failures (CRITICAL and ERROR severity)
+- Re-run validator until exit code is 0
+
+### 2. Run Structure Validator
+```bash
+python3 scripts/validate_structure.py
+```
+
+**Expected:**
+- Exit code: 0
+- Output: "Found: 40+/40+ directories"
+
+### 3. Test Docker Environment
+```bash
+docker compose up -d
+docker compose ps
+```
+
+**Expected:**
+- All 4 services show STATUS: healthy
+- No services in "Exit" or "Restarting" state
+
+### 4. Verify Evidence Artifacts
+```bash
+ls -la evidence/gates/g0_foundation.json
+ls -la evidence/approvals/phase0_charter.json
+ls -la evidence/validation/
+```
+
+**Expected:**
+- All files exist
+- g0_foundation.json has `"status": "PASS"`
+
+### 5. Check for Forbidden Patterns
+```bash
+# Search all deliverables for forbidden patterns
+grep -r "TODO\|TBD\|FIXME" docs/ scripts/ .github/ docker/ contracts/ 2>/dev/null
+```
+
+**Expected:**
+- No matches (exit code 1 from grep = no matches found = GOOD)
+
+### 6. Validate YAML/JSON Syntax
+```bash
+# YAML validation
+yamllint docker-compose.yml .github/workflows/*.yml
+
+# JSON validation
+python3 -m json.tool evidence/gates/g0_foundation.json > /dev/null
+python3 -m json.tool evidence/approvals/phase0_charter.json > /dev/null
+```
+
+**Expected:**
+- No syntax errors
+
+---
+
+## 📊 DEFINITION OF DONE
+
+All must be ✅ for acceptance:
+
+| Criterion | Check Method | Status |
+|-----------|-------------|--------|
+| All 16 deliverables present | Contract validator | ⬜ |
+| All quality gates passed | Contract validator | ⬜ |
+| No forbidden patterns found | Contract validator | ⬜ |
+| Cross-file validations passed | Contract validator | ⬜ |
+| Repository structure validated | validate_structure.py exit 0 | ⬜ |
+| Docker services healthy | docker compose ps | ⬜ |
+| G0 gate status = PASS | g0_foundation.json | ⬜ |
+| Charter approved by 4+ stakeholders | phase0_charter.json | ⬜ |
+| Budget consistency (€250k) | Charter.md = charter.yaml | ⬜ |
+| Contract validator exit code 0 | Final validation | ⬜ |
+
+---
+
+## 🚨 ITERATION LIMITS & ESCALATION
+
+**From Agentic Prompt Guide: 2-Failure Rule**
+
+If ANY deliverable fails validation 2 times:
+1. **STOP WORK IMMEDIATELY**
+2. **Document the issue:**
+   - What deliverable failed
+   - What quality gate failed
+   - What you tried
+   - Why it's not passing
+3. **Escalate to human:**
+   - "I've attempted [DELIVERABLE] twice and cannot pass [QUALITY GATE]. Validation error: [ERROR]. Request clarification or intervention."
+
+**DO NOT attempt more than 2 iterations without human guidance.**
+
+---
+
+## 📤 RETURN PAYLOAD (When Complete)
+
+When all validation passes, generate this structured report:
+
+```json
+{
+  "contract_id": "PHASE_0_FOUNDATION_BUILD_2025",
+  "execution_summary": {
+    "start_time": "2025-01-15T08:00:00Z",
+    "end_time": "2025-01-15T12:00:00Z",
+    "elapsed_seconds": 14400,
+    "deliverables_count": 16
+  },
+  "final_verdict": "ACCEPTED",
+  "validation_report_path": "evidence/validation/phase0_contract_validation.json",
+  "gate_status": {
+    "gate_id": "G0",
+    "status": "PASS",
+    "evidence_path": "evidence/gates/g0_foundation.json"
+  },
+  "deliverable_summary": {
+    "governance_files": 4,
+    "repository_structure_files": 3,
+    "environment_files": 5,
+    "cicd_files": 3,
+    "evidence_files": 1
+  },
+  "verification_steps_completed": [
+    "Contract validator returned exit code 0",
+    "Structure validator returned exit code 0",
+    "Docker compose shows 4/4 services healthy",
+    "G0 gate JSON status = PASS",
+    "Charter approved by 4 stakeholders",
+    "No forbidden patterns found in any deliverable",
+    "All cross-file validations passed"
+  ],
+  "next_steps": [
+    "User validates G0 gate with Zencoder AI",
+    "Upon approval, Zencoder creates Phase 1 instructions",
+    "Phase 1: Core Architecture build begins"
+  ]
+}
+```
+
+Save this to: `evidence/validation/phase0_completion_report.json`
+
+---
+
+## 🎓 BEST PRACTICES INTEGRATION
+
+This contract integrates all 7 best practices from Gap Analysis:
+
+1. **TDD Mandatory** ✅
+   - Phase 0 is infrastructure (no code tests)
+   - Test infrastructure BUILT for Phase 1+ (tests/ directories, CI test jobs)
+
+2. **Evidence Requirements** ✅
+   - Every deliverable produces evidence artifact
+   - Gate validation requires evidence inventory
+
+3. **Iteration Limits (2-failure rule)** ✅
+   - Documented in escalation section
+   - Enforced through execution_constraints
+
+4. **Coverage Delta Reporting** ✅
+   - CI workflow prepared for coverage reporting
+   - Will be used in Phase 1+
+
+5. **DoD Checklist Tables** ✅
+   - Provided in this document (Definition of Done section)
+   - Required in future phase deliverables
+
+6. **Context Discipline** ✅
+   - Required reading section limits context
+   - No repo dumps, targeted document references
+
+7. **Patch Regeneration Guidance** ✅
+   - Contract validation provides specific line-level failures
+   - Validator reports exact patterns that failed
+
+---
+
+## 🔗 WORKFLOW INTEGRATIONS
+
+This Phase 0 build integrates patterns from all 5 workflows:
+
+| Workflow | Integration | Evidence |
+|----------|------------|----------|
+| **N-Grade Contract** | Machine-enforceable quality gates, validation script | `contracts/phase_0_foundation.contract.json` |
+| **Agentic Prompt Guide** | TDD, iteration limits, evidence requirements, DoD tables | See Best Practices section |
+| **UMCA** | Governance layer, RACI matrix, approval flows | `docs/governance/raci_phase0.csv`, `evidence/approvals/` |
+| **H3A Distribution** | State management directories, evidence paths | `state/`, `evidence/` |
+| **EXE MVP** | Session protocol concepts (applied in Phase 1+) | Directory structure prepared |
+
+---
+
+## ❓ QUESTIONS BEFORE STARTING?
+
+If ANY part of this contract is unclear:
+1. **Ask now** before you begin work
+2. Point to specific quality gates or deliverables
+3. Request clarification on thresholds, patterns, or requirements
+
+If everything is clear:
+1. Confirm you understand the requirements
+2. Provide estimated completion time (target: 3-4 hours)
+3. Begin work
+
+**DO NOT deliver until contract validator returns exit code 0.**
+
+---
+
+## 📝 SUMMARY
+
+**What you're doing:** Building Phase 0 foundation (16 deliverables) to achieve G0 gate
+
+**How you'll be judged:** Automated contract validator (zero tolerance)
+
+**What happens if you fail:** Delivery rejected, fix issues, re-validate, re-submit
+
+**What happens if you pass:** G0 gate PASS, user validates with Zencoder, Phase 1 instructions created
+
+**Success looks like:**
+```bash
+$ python3 scripts/validate_contract.py contracts/phase_0_foundation.contract.json
+✅ ACCEPTED
+All 16 deliverables passed quality gates.
+Exit code: 0
+
+$ docker compose ps
+NAME                STATUS
+app                 healthy
+postgres            healthy
+redis               healthy
+meilisearch         healthy
+
+$ cat evidence/gates/g0_foundation.json
+{
+  "gate_id": "G0",
+  "status": "PASS",
+  ...
+}
 ```
 
 ---
 
-## 📤 Deliverable Report Format
-
-When you complete Phase 0, return this report to the user:
-
-```markdown
-# Phase 0 Completion Report
-
-## Executive Summary
-- **Status:** ✅ COMPLETE / ⚠️ PARTIAL / ❌ FAILED
-- **G0 Gate:** ✅ PASSED / ❌ FAILED
-- **Duration:** X days
-- **Iterations:** X (max 2 per task)
-- **Blockers:** None / [List blockers]
-
-## Task Completion Status
-
-### Task 0.0: Strategic Charter
-| Criterion | Status | Evidence |
-|-----------|--------|----------|
-| Charter signed | ✅/❌ | `evidence/approvals/phase0_charter.json` |
-| RACI matrix | ✅/❌ | `docs/strategy/raci_phase0.csv` |
-| Budget documented | ✅/❌ | `docs/strategy/charter.yaml` |
-
-### Task 0.1: Repository Structure
-| Criterion | Status | Evidence |
-|-----------|--------|----------|
-| Directories created | ✅/❌ | `scripts/bootstrap_repo.sh` executed |
-| Validation passed | ✅/❌ | `evidence/gates/g0_foundation.json` |
-| Branch protection | ✅/❌ | `evidence/release/branch_protection.md` |
-
-### Task 0.2: Development Environment
-| Criterion | Status | Evidence |
-|-----------|--------|----------|
-| Docker services healthy | ✅/❌ | `docker compose ps` output |
-| Dev tools installed | ✅/❌ | `scripts/install_dev_tools.sh` exit code |
-| Environment docs | ✅/❌ | `docs/ops/environment_reference.md` |
-
-### Task 0.3: CI/CD Pipeline
-| Criterion | Status | Evidence |
-|-----------|--------|----------|
-| CI pipeline passing | ✅/❌ | GitHub Actions run #XXXX |
-| Runtime <12min | ✅/❌ | XX:XX actual |
-| All jobs pass | ✅/❌ | lint, test, security, sbom |
-
-## Evidence Artifacts (All Generated)
-- [x] `evidence/gates/g0_foundation.json`
-- [x] `evidence/approvals/phase0_charter.json`
-- [x] `evidence/release/branch_protection.md`
-- [x] `evidence/security/env_hashes.json`
-- [x] CI artifacts (coverage, sbom, lint results)
-
-## G0 Gate Validation Result
-✅ **PASSED** - All criteria met, system ready for Phase 1
-
-## Issues Encountered
-1. **Issue:** [Description]
-   - **Resolution:** [How it was fixed]
-   - **Iteration:** 1/2
-
-## Next Steps
-- User should review evidence artifacts in `evidence/` directory
-- User should verify Docker services: `docker compose ps`
-- User should verify CI pipeline: Check GitHub Actions tab
-- **Ready for Phase 1 instructions** (Core Architecture)
-
-## Artifacts Location
-- Repository: `/Users/Yousef_1/Coding/N_grade/`
-- Evidence: `/Users/Yousef_1/Coding/N_grade/evidence/`
-- Git tag: `v0.0-foundation` (commit: XXXXXXX)
+**BEGIN WORK. NO MORE HALF-ASSED DELIVERIES.**
 
 ---
 
-**Completed by:** [AI Assistant Name]  
-**Date:** 2025-01-XX  
-**Verification:** User should review and approve before Phase 1
-```
-
----
-
-## 🚨 Escalation Protocol
-
-### When to Escalate to Human
-1. ✅ **After 2 failed iterations** on any task
-2. ✅ Dependency not available (e.g., GitHub API access)
-3. ✅ Ambiguous requirement interpretation
-4. ✅ CI pipeline fails >2x despite fixes
-5. ✅ Stakeholder approvals blocked (charter sign-off)
-
-### Escalation Format
-```markdown
-## ESCALATION REQUIRED
-
-**Task:** [Task number and name]  
-**Iteration:** 2/2 (limit reached)  
-**Issue:** [Brief description]
-
-**Attempted Solutions:**
-1. [First attempt] → [Result]
-2. [Second attempt] → [Result]
-
-**Recommendation:**
-[What human should do to unblock]
-
-**Evidence:**
-- Logs: [path to logs]
-- Error output: [paste or link]
-```
-
----
-
-## 📚 Additional Notes
-
-### TDD Reminder
-- Phase 0 is primarily infrastructure (bash scripts, YAML, documentation)
-- TDD becomes critical in Phase 1 (Python application code)
-- Test infrastructure is being **built** in Phase 0 (CI pipeline, test directories)
-
-### Context Discipline
-- Focus on Phase 0 tasks only
-- Do not implement Phase 1 features
-- Keep scripts simple and focused
-
-### Iteration Tracking
-- Track attempts per task (max 2)
-- Document issues in report
-- Escalate if blocked
-
-### Quality Bar
-- All scripts must be idempotent (safe to re-run)
-- All evidence must be machine-verifiable
-- All documentation must be complete (no TBD in critical sections)
-
----
-
-**END OF PHASE 0 INSTRUCTIONS**
-
-**Questions?** Escalate to user with specific question and context.
-
-**Ready to Begin?** Start with Task 0.0 (Strategic Charter).
-
-**Remember:** "Start with the simplest thing that proves the system works." — Build G0 perfectly, then move to G1.
+*This instruction was generated by Zencoder AI Assistant using contract-based enforcement methodology.*  
+*Contract ID: `PHASE_0_FOUNDATION_BUILD_2025`*  
+*Validator: `scripts/validate_contract.py`*  
+*Workflow Integrations: N-Grade Contract, Agentic Prompt Guide, UMCA, H3A Distribution, EXE MVP*  
+*Date: October 1, 2025*

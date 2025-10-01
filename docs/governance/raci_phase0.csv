@@ -1,0 +1,16 @@
+Activity,Role,RACI
+Charter approval,Programme Sponsor,A
+Charter drafting,Delivery Manager,R
+Budget oversight,Finance Director,A
+Compliance governance,Compliance Lead,A
+Infrastructure setup,Platform Engineering Lead,R
+Security controls,Security Architect,A
+Product alignment,Product Manager,C
+Operations readiness,Operations Lead,C
+Legal review,Legal Advisor,C
+Stakeholder communications,Programme Sponsor,R
+CI/CD maintenance,Platform Engineering Lead,A
+Evidence validation,Delivery Manager,R
+Risk management,CTO,C
+Audit preparation,Compliance Lead,R
+Change control board,CTO,A

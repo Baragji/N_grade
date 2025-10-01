@@ -1,0 +1,87 @@
+programme:
+  name: autonomous_ai_coding_system_phase0
+  phase: Phase 0
+  budget_eur: 250000
+  duration_weeks: 26
+  phases: [Phase 0, Phase 1, Phase 2, Phase 3, Phase 4, Phase 5, Phase 6, Phase 7, Phase 8]
+stakeholders:
+  - name: Elena Fischer
+    role: Programme Sponsor
+    responsibility: Approves charter scope and €250,000 ceiling
+  - name: Malik O'Connor
+    role: CTO
+    responsibility: Owns technical execution across Phase 0-8
+  - name: Sofia Mendes
+    role: Compliance Lead
+    responsibility: Ensures EU AI Act, ISO 42001, GDPR adherence
+  - name: Priya Patel
+    role: Finance Director
+    responsibility: Validates €41,700 monthly burn rate
+  - name: Jonas Richter
+    role: Delivery Manager
+    responsibility: Coordinates sprints and gate reviews
+  - name: Hana Iwasaki
+    role: Platform Engineering Lead
+    responsibility: Maintains infrastructure and CI/CD
+  - name: Amir Haddad
+    role: Security Architect
+    responsibility: Oversees ISO 42001 control implementation
+  - name: Lucia Marino
+    role: Product Manager
+    responsibility: Aligns roadmap milestones with charter
+  - name: Omar Diallo
+    role: Operations Lead
+    responsibility: Prepares Phase 8 transition and runbooks
+  - name: Greta Nowak
+    role: Legal Advisor
+    responsibility: Confirms GDPR and contractual compliance
+success_metrics:
+  - name: repository_bootstrap_complete
+    description: scripts/bootstrap_repo.sh executed with 40+ directories
+    evidence: {path: evidence/gates/g0_foundation.json, type: json, validation: bootstrap_structure}
+  - name: charter_approved
+    description: Four stakeholders approved charter with sha256 hash
+    evidence: {path: evidence/approvals/phase0_charter.json, type: json, validation: digital_signoff}
+  - name: ci_pipeline_green
+    description: CI workflow passes lint, test, and validation jobs
+    evidence: {path: evidence/validation/ci_status.log, type: log, validation: github_actions}
+  - name: security_scan_clear
+    description: security.yml generates report with no high severity items
+    evidence: {path: evidence/security/dependency_scan.json, type: json, validation: security_audit}
+  - name: environment_ready
+    description: docker-compose stack healthy with documented setup
+    evidence: {path: evidence/operations/environment_checklist.md, type: markdown, validation: healthcheck_review}
+  - name: budget_guardrails_enabled
+    description: Finance confirms €250,000 ceiling and €41,700 monthly run-rate
+    evidence: {path: evidence/finance/phase0_budget_report.csv, type: csv, validation: finance_review}
+  - name: compliance_controls_documented
+    description: EU AI Act, ISO 42001, and GDPR controls mapped in documentation
+    evidence: {path: evidence/compliance/framework_traceability.md, type: markdown, validation: compliance_review}
+  - name: branch_protection_enforced
+    description: branch_protection.md adopted with required reviews and signed commits
+    evidence: {path: evidence/governance/branch_protection_audit.json, type: json, validation: policy_audit}
+  - name: gate_validation_automated
+    description: gate_validation.yml publishes machine-readable results
+    evidence: {path: evidence/validation/phase0_contract_validation.json, type: json, validation: contract_runner}
+cadence:
+  steering_committee:
+    frequency: biweekly
+    format: virtual
+    agenda:
+      - Evidence review
+      - Budget alignment
+      - Risk mitigation tracking
+      - Compliance status updates
+      - Phase dependency planning
+      - Decision logging
+      - Action assignment
+risks:
+  - name: tooling_drift
+    impact: High
+    mitigation: Install scripts and validation checks executed weekly
+  - name: budget_variance
+    impact: Medium
+    mitigation: Finance director reviews burn and approves changes
+  - name: compliance_gap
+    impact: High
+    mitigation: Compliance lead conducts EU AI Act, ISO 42001, GDPR audits

@@ -1,0 +1,437 @@
+{
+  "$schema": "../docs/Workflows/02_project-N-Grade_contract/documentation_delivery.contract.schema.json",
+  "contract_version": "1.0.0",
+  "contract_id": "PHASE_0_FOUNDATION_BUILD_2025",
+  "intent": "Enforce complete, production-grade Phase 0 foundation delivery with strict quality gates and zero tolerance for incomplete work.",
+  
+  "deliverables": [
+    {
+      "file_path": "docs/strategy/charter.md",
+      "file_type": "markdown",
+      "purpose": "Strategic charter defining mission, success criteria, budget, compliance obligations, risks, and 26-week timeline aligned with autonomous_ai_roadmap_v2.md Phase 0-8.",
+      "quality_gates": {
+        "min_lines": 200,
+        "max_lines": 400,
+        "required_sections": [
+          "^## Problem Statement",
+          "^## Success Criteria",
+          "^## Budget Ceiling",
+          "^## Regulatory Obligations",
+          "^## Primary Risks and Mitigations",
+          "^## Timeline \\(26 Weeks, Phases 0-8\\)"
+        ],
+        "forbidden_patterns": [
+          {"pattern": "TODO|TBD|FIXME", "reason": "Charter must be complete, no placeholders"},
+          {"pattern": "\\(template\\)", "reason": "No template markers allowed"},
+          {"pattern": "\\.\\.\\.", "reason": "No ellipsis indicating omitted content"},
+          {"pattern": "\\[FILL IN\\]|\\[TBD\\]", "reason": "All sections must be filled"}
+        ],
+        "required_patterns": [
+          {"pattern": "€\\d+", "min_occurrences": 2, "reason": "Must include budget amounts in EUR"},
+          {"pattern": "EU AI Act|ISO.*42001|GDPR", "min_occurrences": 3, "reason": "Must reference compliance frameworks"},
+          {"pattern": "Phase [0-8]", "min_occurrences": 9, "reason": "Must include all 9 phases"},
+          {"pattern": "✅|success criteria", "min_occurrences": 7, "reason": "Minimum 7 success criteria"}
+        ],
+        "structural_requirements": {
+          "min_code_blocks": 0,
+          "min_tables": 0,
+          "min_lists": 15
+        }
+      }
+    },
+    {
+      "file_path": "docs/strategy/charter.yaml",
+      "file_type": "yaml",
+      "purpose": "Machine-readable charter specification with stakeholders, steering cadence, success metrics mapped to evidence artifacts.",
+      "quality_gates": {
+        "min_lines": 30,
+        "max_lines": 100,
+        "forbidden_patterns": [
+          {"pattern": "TODO|TBD", "reason": "Must be complete"},
+          {"pattern": "\\(template\\)", "reason": "No templates"}
+        ],
+        "required_patterns": [
+          {"pattern": "stakeholders:", "min_occurrences": 1, "reason": "Must define stakeholders list"},
+          {"pattern": "success_metrics:", "min_occurrences": 1, "reason": "Must define success metrics"},
+          {"pattern": "evidence:", "min_occurrences": 4, "reason": "Minimum 4 evidence path mappings"},
+          {"pattern": "budget_eur:", "min_occurrences": 1, "reason": "Must specify budget"}
+        ],
+        "structural_requirements": {
+          "min_lists": 10
+        }
+      }
+    },
+    {
+      "file_path": "docs/governance/raci_phase0.csv",
+      "file_type": "csv",
+      "purpose": "RACI matrix defining roles, responsibilities, and accountability for Phase 0 governance functions (minimum 10 roles).",
+      "quality_gates": {
+        "min_lines": 12,
+        "csv_validation": {
+          "required_columns": ["Activity", "Role", "RACI"],
+          "min_rows": 10,
+          "no_empty_cells": true
+        },
+        "forbidden_patterns": [
+          {"pattern": "TODO|TBD", "reason": "All cells must be filled"}
+        ]
+      }
+    },
+    {
+      "file_path": "evidence/approvals/phase0_charter.json",
+      "file_type": "json",
+      "purpose": "Charter approval evidence with stakeholder sign-offs and SHA-256 verification hash of signed charter document.",
+      "quality_gates": {
+        "min_lines": 10,
+        "required_patterns": [
+          {"pattern": "\"approved\":\\s*true", "min_occurrences": 4, "reason": "Minimum 4 stakeholder approvals"},
+          {"pattern": "sha256:", "min_occurrences": 1, "reason": "Must include verification hash"},
+          {"pattern": "\"timestamp\":", "min_occurrences": 4, "reason": "All approvals must be timestamped"}
+        ],
+        "forbidden_patterns": [
+          {"pattern": "false", "reason": "All approvers must have approved=true for G0 gate"}
+        ],
+        "json_schema_validation": {
+          "strict_mode": true
+        }
+      }
+    },
+    {
+      "file_path": "scripts/bootstrap_repo.sh",
+      "file_type": "shell",
+      "purpose": "Idempotent bash script creating 40+ canonical directory structure with README.md stubs, aligned with autonomous_ai_roadmap_v2.md evidence paths.",
+      "quality_gates": {
+        "min_lines": 80,
+        "max_lines": 200,
+        "required_patterns": [
+          {"pattern": "#!/bin/bash", "min_occurrences": 1, "reason": "Must have shebang"},
+          {"pattern": "set -euo pipefail", "min_occurrences": 1, "reason": "Must use safe bash settings"},
+          {"pattern": "mkdir -p", "min_occurrences": 40, "reason": "Must create 40+ directories"},
+          {"pattern": "evidence/", "min_occurrences": 10, "reason": "Must create evidence directories"},
+          {"pattern": "state/", "min_occurrences": 3, "reason": "Must create state directories"},
+          {"pattern": "echo .+ > .+/README\\.md", "min_occurrences": 10, "reason": "Must create README stubs"}
+        ],
+        "forbidden_patterns": [
+          {"pattern": "rm -rf /", "reason": "No dangerous rm commands"},
+          {"pattern": "TODO", "reason": "Script must be complete"}
+        ],
+        "structural_requirements": {
+          "min_code_blocks": 0,
+          "min_lists": 0
+        }
+      }
+    },
+    {
+      "file_path": "scripts/validate_structure.py",
+      "file_type": "python",
+      "purpose": "Python validation script checking all 40+ required directories exist, generating structure_validation.json report.",
+      "quality_gates": {
+        "min_lines": 50,
+        "max_lines": 150,
+        "required_patterns": [
+          {"pattern": "#!/usr/bin/env python3", "min_occurrences": 1, "reason": "Must have shebang"},
+          {"pattern": "import json", "min_occurrences": 1, "reason": "Must generate JSON report"},
+          {"pattern": "Path\\(.+\\)\\.exists\\(\\)", "min_occurrences": 5, "reason": "Must validate directory existence"},
+          {"pattern": "def validate", "min_occurrences": 1, "reason": "Must have validation function"},
+          {"pattern": "sys\\.exit\\([01]\\)", "min_occurrences": 1, "reason": "Must return proper exit codes"}
+        ],
+        "forbidden_patterns": [
+          {"pattern": "TODO|TBD", "reason": "Script must be complete"},
+          {"pattern": "pass\\s*$", "reason": "No empty function stubs"}
+        ]
+      }
+    },
+    {
+      "file_path": "docs/governance/branch_protection.md",
+      "file_type": "markdown",
+      "purpose": "Branch protection configuration documentation specifying rules for main/develop branches, required reviews, status checks.",
+      "quality_gates": {
+        "min_lines": 40,
+        "max_lines": 100,
+        "required_sections": [
+          "^## Branch Protection Rules",
+          "^## Required Status Checks",
+          "^## Review Requirements"
+        ],
+        "required_patterns": [
+          {"pattern": "```(yaml|json|bash)", "min_occurrences": 2, "reason": "Must include configuration examples"},
+          {"pattern": "main|master", "min_occurrences": 2, "reason": "Must specify main branch rules"},
+          {"pattern": "required.*review", "min_occurrences": 1, "reason": "Must specify review requirements"}
+        ],
+        "forbidden_patterns": [
+          {"pattern": "TODO|TBD", "reason": "Must be complete"}
+        ],
+        "structural_requirements": {
+          "min_code_blocks": 2,
+          "min_lists": 5
+        }
+      }
+    },
+    {
+      "file_path": "docker-compose.yml",
+      "file_type": "yaml",
+      "purpose": "Docker Compose configuration with app, postgres, redis, meilisearch services, health checks, volumes, networks.",
+      "quality_gates": {
+        "min_lines": 60,
+        "max_lines": 150,
+        "required_patterns": [
+          {"pattern": "version:", "min_occurrences": 1, "reason": "Must specify docker-compose version"},
+          {"pattern": "services:", "min_occurrences": 1, "reason": "Must define services section"},
+          {"pattern": "postgres:|postgresql:", "min_occurrences": 1, "reason": "Must include postgres service"},
+          {"pattern": "redis:", "min_occurrences": 1, "reason": "Must include redis service"},
+          {"pattern": "meilisearch:", "min_occurrences": 1, "reason": "Must include meilisearch service"},
+          {"pattern": "healthcheck:", "min_occurrences": 4, "reason": "All 4 services must have health checks"},
+          {"pattern": "volumes:", "min_occurrences": 3, "reason": "Must define persistent volumes"}
+        ],
+        "forbidden_patterns": [
+          {"pattern": "TODO|CHANGEME", "reason": "Must have real configuration"},
+          {"pattern": "password: admin", "reason": "No hardcoded default passwords"}
+        ]
+      }
+    },
+    {
+      "file_path": "docker/Dockerfile",
+      "file_type": "shell",
+      "purpose": "Multi-stage Dockerfile for application container with security best practices, non-root user, layer caching optimization.",
+      "quality_gates": {
+        "min_lines": 30,
+        "max_lines": 80,
+        "required_patterns": [
+          {"pattern": "FROM .+ AS .+", "min_occurrences": 2, "reason": "Must use multi-stage build"},
+          {"pattern": "USER .+", "min_occurrences": 1, "reason": "Must use non-root user"},
+          {"pattern": "WORKDIR", "min_occurrences": 1, "reason": "Must set working directory"},
+          {"pattern": "COPY|ADD", "min_occurrences": 3, "reason": "Must copy application files"},
+          {"pattern": "HEALTHCHECK", "min_occurrences": 1, "reason": "Must define health check"}
+        ],
+        "forbidden_patterns": [
+          {"pattern": "USER root", "reason": "Final stage must not run as root"},
+          {"pattern": "TODO", "reason": "Dockerfile must be complete"}
+        ]
+      }
+    },
+    {
+      "file_path": "scripts/install_dev_tools.sh",
+      "file_type": "shell",
+      "purpose": "Development tools installation script for local environment bootstrap (Docker, Python, Node.js, pre-commit hooks).",
+      "quality_gates": {
+        "min_lines": 40,
+        "max_lines": 120,
+        "required_patterns": [
+          {"pattern": "#!/bin/bash", "min_occurrences": 1, "reason": "Must have shebang"},
+          {"pattern": "set -euo pipefail", "min_occurrences": 1, "reason": "Must use safe bash settings"},
+          {"pattern": "docker|Docker", "min_occurrences": 2, "reason": "Must install/verify Docker"},
+          {"pattern": "python3|pip", "min_occurrences": 2, "reason": "Must install Python tools"},
+          {"pattern": "node|npm|pnpm", "min_occurrences": 2, "reason": "Must install Node.js tools"}
+        ],
+        "forbidden_patterns": [
+          {"pattern": "rm -rf /", "reason": "No dangerous commands"},
+          {"pattern": "TODO", "reason": "Script must be complete"}
+        ]
+      }
+    },
+    {
+      "file_path": "docs/development/environment_setup.md",
+      "file_type": "markdown",
+      "purpose": "Environment setup documentation with prerequisites, installation steps, verification commands, troubleshooting, expected <2 hour bootstrap time.",
+      "quality_gates": {
+        "min_lines": 80,
+        "max_lines": 200,
+        "required_sections": [
+          "^## Prerequisites",
+          "^## Installation",
+          "^## Verification",
+          "^## Troubleshooting"
+        ],
+        "required_patterns": [
+          {"pattern": "```(bash|shell)", "min_occurrences": 8, "reason": "Must include command examples"},
+          {"pattern": "docker compose (up|ps|logs)", "min_occurrences": 2, "reason": "Must document Docker usage"},
+          {"pattern": "Bootstrap time: <2 hours|≤2 hours|under 2 hours", "min_occurrences": 1, "reason": "Must document bootstrap time target"}
+        ],
+        "forbidden_patterns": [
+          {"pattern": "TODO|TBD", "reason": "Documentation must be complete"}
+        ],
+        "structural_requirements": {
+          "min_code_blocks": 8,
+          "min_tables": 1,
+          "min_lists": 10
+        }
+      }
+    },
+    {
+      "file_path": ".env.example",
+      "file_type": "shell",
+      "purpose": "Environment variables template with all required configuration keys, descriptions, safe default values.",
+      "quality_gates": {
+        "min_lines": 20,
+        "max_lines": 60,
+        "required_patterns": [
+          {"pattern": "^[A-Z_]+=", "min_occurrences": 15, "reason": "Minimum 15 environment variables"},
+          {"pattern": "POSTGRES_", "min_occurrences": 3, "reason": "Must include Postgres config"},
+          {"pattern": "REDIS_", "min_occurrences": 2, "reason": "Must include Redis config"},
+          {"pattern": "#.*", "min_occurrences": 10, "reason": "Must include comments explaining variables"}
+        ],
+        "forbidden_patterns": [
+          {"pattern": "password.*=.*(admin|root|123)", "reason": "No weak default passwords"},
+          {"pattern": "secret.*=.*secret", "reason": "No placeholder secrets"}
+        ]
+      }
+    },
+    {
+      "file_path": ".github/workflows/ci.yml",
+      "file_type": "yaml",
+      "purpose": "GitHub Actions CI workflow: lint, test, security scan, build validation, runs on PR/push to main, <12min target runtime.",
+      "quality_gates": {
+        "min_lines": 50,
+        "max_lines": 150,
+        "required_patterns": [
+          {"pattern": "name: CI", "min_occurrences": 1, "reason": "Must have workflow name"},
+          {"pattern": "on:\\s*(push|pull_request)", "min_occurrences": 1, "reason": "Must define triggers"},
+          {"pattern": "runs-on:", "min_occurrences": 1, "reason": "Must specify runner"},
+          {"pattern": "actions/checkout", "min_occurrences": 1, "reason": "Must checkout code"},
+          {"pattern": "lint|test|security", "min_occurrences": 3, "reason": "Must include lint, test, security jobs"},
+          {"pattern": "uses: actions/upload-artifact", "min_occurrences": 1, "reason": "Must upload artifacts"}
+        ],
+        "forbidden_patterns": [
+          {"pattern": "TODO|FIXME", "reason": "Workflow must be complete"}
+        ]
+      }
+    },
+    {
+      "file_path": ".github/workflows/security.yml",
+      "file_type": "yaml",
+      "purpose": "GitHub Actions security workflow: SAST, dependency scanning, SBOM generation, secret scanning.",
+      "quality_gates": {
+        "min_lines": 40,
+        "max_lines": 120,
+        "required_patterns": [
+          {"pattern": "name: Security", "min_occurrences": 1, "reason": "Must have workflow name"},
+          {"pattern": "codeql|trivy|snyk|semgrep", "min_occurrences": 1, "reason": "Must include security scanner"},
+          {"pattern": "sbom|cyclonedx|syft", "min_occurrences": 1, "reason": "Must generate SBOM"},
+          {"pattern": "actions/upload-artifact", "min_occurrences": 1, "reason": "Must upload security reports"}
+        ],
+        "forbidden_patterns": [
+          {"pattern": "TODO", "reason": "Workflow must be complete"}
+        ]
+      }
+    },
+    {
+      "file_path": ".github/workflows/gate_validation.yml",
+      "file_type": "yaml",
+      "purpose": "GitHub Actions gate validation workflow: validates gate criteria, checks evidence artifacts, enforces phase progression rules.",
+      "quality_gates": {
+        "min_lines": 30,
+        "max_lines": 100,
+        "required_patterns": [
+          {"pattern": "name: Gate Validation", "min_occurrences": 1, "reason": "Must have workflow name"},
+          {"pattern": "evidence/gates", "min_occurrences": 1, "reason": "Must reference evidence paths"},
+          {"pattern": "python.*validate", "min_occurrences": 1, "reason": "Must run validation script"}
+        ],
+        "forbidden_patterns": [
+          {"pattern": "TODO", "reason": "Workflow must be complete"}
+        ]
+      }
+    },
+    {
+      "file_path": "evidence/gates/g0_foundation.json",
+      "file_type": "json",
+      "purpose": "G0 gate validation result: pass/fail status, criteria checks, evidence artifact inventory, validation timestamp.",
+      "quality_gates": {
+        "min_lines": 15,
+        "required_patterns": [
+          {"pattern": "\"gate_id\":\\s*\"G0\"", "min_occurrences": 1, "reason": "Must specify gate ID"},
+          {"pattern": "\"status\":\\s*\"(PASS|PENDING)\"", "min_occurrences": 1, "reason": "Must have status field"},
+          {"pattern": "\"criteria\":", "min_occurrences": 1, "reason": "Must list validation criteria"},
+          {"pattern": "\"timestamp\":", "min_occurrences": 1, "reason": "Must be timestamped"}
+        ],
+        "forbidden_patterns": [
+          {"pattern": "\"status\":\\s*\"FAIL\"", "reason": "G0 gate must pass for delivery acceptance"}
+        ]
+      }
+    }
+  ],
+
+  "cross_file_validations": [
+    {
+      "name": "charter_budget_consistency",
+      "description": "Budget amount in charter.md must match charter.yaml budget_eur field",
+      "files": ["docs/strategy/charter.md", "docs/strategy/charter.yaml"],
+      "validation_type": "data_consistency",
+      "rules": [
+        "EUR amount in charter.md must equal budget_eur in charter.yaml",
+        "Both must specify €250,000 as per autonomous_ai_roadmap_v2.md"
+      ]
+    },
+    {
+      "name": "evidence_paths_exist",
+      "description": "All evidence paths referenced in charter.yaml success_metrics must exist as deliverables",
+      "files": ["docs/strategy/charter.yaml", "evidence/gates/g0_foundation.json", "evidence/approvals/phase0_charter.json"],
+      "validation_type": "reference_consistency",
+      "rules": [
+        "charter.yaml success_metrics.evidence paths must exist as files",
+        "evidence/gates/g0_foundation.json must be deliverable",
+        "evidence/approvals/phase0_charter.json must be deliverable"
+      ]
+    },
+    {
+      "name": "docker_env_consistency",
+      "description": "Environment variables in .env.example must match those referenced in docker-compose.yml",
+      "files": [".env.example", "docker-compose.yml"],
+      "validation_type": "reference_consistency",
+      "rules": [
+        "All ${VAR} references in docker-compose.yml must have VAR= entry in .env.example",
+        "POSTGRES_*, REDIS_* variables must be consistent across both files"
+      ]
+    },
+    {
+      "name": "phase_timeline_consistency",
+      "description": "Phase 0-8 timeline in charter.md must align with autonomous_ai_roadmap_v2.md phases",
+      "files": ["docs/strategy/charter.md"],
+      "validation_type": "completeness_check",
+      "rules": [
+        "Must reference all 9 phases (Phase 0 through Phase 8)",
+        "Timeline must span 26 weeks as per roadmap",
+        "Phase 0 must be weeks 1-2"
+      ]
+    }
+  ],
+
+  "execution_constraints": {
+    "max_session_time_hours": 4.0,
+    "checkpoint_required": true,
+    "checkpoint_interval": 5,
+    "fail_fast": true,
+    "dry_run_required": false,
+    "backup_originals": true
+  },
+
+  "definition_of_done": {
+    "all_deliverables_present": true,
+    "all_quality_gates_passed": true,
+    "all_cross_file_validations_passed": true,
+    "no_forbidden_patterns_found": true,
+    "validation_report_generated": true
+  },
+
+  "return_payload": {
+    "contract_id": "PHASE_0_FOUNDATION_BUILD_2025",
+    "final_verdict": "REJECTED",
+    "validation_report_path": "evidence/validation/phase0_contract_validation.json"
+  },
+
+  "metadata": {
+    "created_by": "Zencoder AI Assistant",
+    "created_date": "2025-10-01",
+    "ai_agent": "Claude / GPT-4 / Codex",
+    "estimated_effort_hours": 3.5,
+    "priority": "CRITICAL",
+    "gate": "G0",
+    "phase": "Phase 0",
+    "workflow_integrations": [
+      "N-Grade Contract (contract-based enforcement)",
+      "Agentic Prompt Guide (TDD, iteration limits, evidence requirements)",
+      "UMCA (governance, RACI, approval flows)",
+      "H3A Distribution (state management, evidence paths)",
+      "EXE MVP (session protocol, handoff template)"
+    ]
+  }
+}

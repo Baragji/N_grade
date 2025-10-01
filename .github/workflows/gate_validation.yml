@@ -1,0 +1,40 @@
+name: Gate Validation
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  validate-gates:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Run gate validation
+        run: |
+          python scripts/validate_contract.py \
+            contracts/phase_0_foundation.contract.json \
+            --report-path evidence/validation/phase0_contract_validation.json
+      - name: Record gate status
+        run: |
+          python scripts/validate_structure.py
+      - name: Snapshot gate evidence directory
+        run: |
+          ls -R evidence/gates
+      - name: Publish evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: gate-validation-evidence
+          path: |
+            evidence/validation/phase0_contract_validation.json
+            evidence/validation/structure_validation.json
+            evidence/gates/g0_foundation.json

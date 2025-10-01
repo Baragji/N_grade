@@ -1,1 +1,0 @@
-declare module "ajv/dist/2020";

@@ -1,0 +1,48 @@
+vendors:
+  openai:
+    region: eu-west-1
+    endpoint: https://api.openai.com/v1
+    data_retention: 30_days
+    training_data: opt-out
+    logging: disabled
+    residency_notes: Services pinned to EU availability zones
+  anthropic:
+    region: europe-central2
+    endpoint: https://api.anthropic.com
+    data_retention: 14_days
+    training_data: opt-out
+    logging: disabled
+    residency_notes: Data stored in EU sovereign cloud
+  local:
+    region: eu-north-1
+    endpoint: http://localhost:8080
+    data_retention: 7_days
+    training_data: opt-out
+    logging: disabled
+    residency_notes: Self-hosted environment within EU borders
+
+controls:
+  compliance_owner: finops
+  audit_frequency_days: 30
+  breach_notification_hours: 24
+
+exceptions:
+  allow_cross_region_failover: false
+  auto_upgrade: false
+
+monitoring:
+  metrics:
+    - name: residency_latency
+      description: Track latency for EU endpoints
+    - name: residency_failover
+      description: Count failovers outside EU
+  escalation_matrix:
+    tier1: on-call
+    tier2: compliance_lead
+    tier3: ciso
+
+data_controls:
+  encryption_at_rest: true
+  encryption_in_transit: true
+  pii_processing: forbidden
+  data_processing_addendum: signed

@@ -1,10 +1,40 @@
-node_modules
-dist
+node_modules/
+dist/
 .env
-output
-.nyc_output
+output/
+.nyc_output/
 coverage
 .DS_Store
 
 # Archived prototypes (may contain sensitive data)
 .archive/
+
+# Cache and build artifacts
+# Python
+__pycache__/
+*.py[cod]
+# Byte-compiled / optimized / DLL files
+*$py.class
+
+# Virtual environments
+venv/
+env/
+/.venv/
+
+# pip cache
+.cache/pip
+
+# Common caches and test artifacts
+.cache/
+.pytest_cache/
+.mypy_cache/
+.tox/
+.coverage
+coverage.xml
+
+# Editor and IDE
+.vscode/
+.idea/
+
+# macOS
+.DS_Store

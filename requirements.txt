@@ -1,9 +1,14 @@
-# Base Python dependencies for Phase 0 validation
+# Production and testing dependencies
 click==8.1.7
 pyyaml==6.0.2
+sqlalchemy>=2.0.0
+redis>=5.0.0
+httpx>=0.26.0
+langgraph>=0.2.0
 
 # Testing dependencies
 pytest>=8.0.0
+fakeredis>=2.23.2
 
 # Security: Fix CVE-2024-6345 and CVE-2025-47273
 setuptools>=78.1.1

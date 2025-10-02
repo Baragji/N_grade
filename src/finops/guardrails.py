@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import logging
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Dict, List, Optional
 
 LOGGER = logging.getLogger(__name__)
@@ -17,7 +17,7 @@ class BudgetSnapshot:
     monthly_cap: float
     daily_spend: float
     monthly_spend: float
-    timestamp: datetime = field(default_factory=datetime.utcnow)
+    timestamp: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
     def remaining_daily(self) -> float:
         """Return remaining daily cap."""
@@ -115,7 +115,7 @@ class FinOpsGuardrails:
             {
                 "type": alert["type"],
                 "message": alert["message"],
-                "timestamp": datetime.utcnow().isoformat(),
+                "timestamp": datetime.now(timezone.utc).isoformat(),
             }
             for alert in self._alerts
         ]

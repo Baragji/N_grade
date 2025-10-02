@@ -6,7 +6,7 @@ import json
 import logging
 import uuid
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any, Dict, Iterable, List, Optional
 
 import httpx
@@ -57,7 +57,7 @@ class NotificationPublisher:
         enriched_payload.update({
             "correlation_id": correlation_id,
             "trace_id": trace_id,
-            "timestamp": datetime.utcnow().isoformat(),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
         })
         return NotificationMessage(
             destination=destination,

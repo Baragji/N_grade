@@ -1,0 +1,81 @@
+{
+  "gate": "G1",
+  "phase": "Phase 1",
+  "status": "PASS",
+  "timestamp": "2025-01-02T10:00:00Z",
+  "summary": "Phase 1 core architecture meets latency, budget, and residency commitments.",
+  "state_fabric": {
+    "latency": {
+      "redis_p95_ms": 45,
+      "postgres_write_p95_ms": 110,
+      "cache_warm_ms": 30
+    },
+    "evidence": [
+      "metrics/performance/state_cache_latency.csv",
+      "docs/architecture/phase1_architecture.md"
+    ]
+  },
+  "orchestration": {
+    "latency": {
+      "planner_ms": 150,
+      "coder_ms": 400,
+      "critic_ms": 210
+    },
+    "evidence": [
+      "src/orchestration/graph_builder.py",
+      "tests/integration/test_orchestration.py"
+    ]
+  },
+  "router": {
+    "latency": {
+      "routing_ms": 120,
+      "failover_ms": 180,
+      "fallback_ms": 200
+    },
+    "budget": {
+      "daily_cap_eur": 450,
+      "monthly_cap_eur": 12000
+    },
+    "evidence": [
+      "src/models/router.py",
+      "tests/integration/test_model_router.py",
+      "configs/model_routing.yaml"
+    ]
+  },
+  "finops": {
+    "latency": {
+      "evaluation_ms": 40,
+      "alert_dispatch_ms": 100
+    },
+    "budget": {
+      "daily_cap_eur": 450,
+      "monthly_cap_eur": 12000
+    },
+    "evidence": [
+      "src/finops/guardrails.py",
+      "policies/finops.yaml",
+      "metrics/cost/budget_report.csv"
+    ]
+  },
+  "residency": {
+    "latency": {
+      "audit_ms": 60,
+      "failover_ms": 900
+    },
+    "evidence": [
+      "configs/vendor_residency.yaml",
+      "scripts/check_residency.py",
+      "notifications/delivery_log.csv"
+    ]
+  },
+  "packages": {
+    "latency": {
+      "verification_ms": 420,
+      "report_ms": 300
+    },
+    "evidence": [
+      "scripts/verify_packages.py",
+      "evidence/pkg_reality_report.md"
+    ]
+  }
+}

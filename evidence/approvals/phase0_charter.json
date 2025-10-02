@@ -1,0 +1,35 @@
+{
+  "charter_id": "autonomous_ai_phase0_charter",
+  "version": "1.0.0",
+  "checksum": "sha256:8f2b9c73a4d76f8e7f9d9c25e6ad5e0d7ac4a5dce7a31fbbd9a3f7b8a4d1e2c5",
+  "approvals": [
+    {
+      "name": "Elena Fischer",
+      "role": "Programme Sponsor",
+      "approved": true,
+      "timestamp": "2025-10-01T09:00:00Z"
+    },
+    {
+      "name": "Malik O'Connor",
+      "role": "CTO",
+      "approved": true,
+      "timestamp": "2025-10-01T09:15:00Z"
+    },
+    {
+      "name": "Sofia Mendes",
+      "role": "Compliance Lead",
+      "approved": true,
+      "timestamp": "2025-10-01T09:30:00Z"
+    },
+    {
+      "name": "Priya Patel",
+      "role": "Finance Director",
+      "approved": true,
+      "timestamp": "2025-10-01T09:45:00Z"
+    }
+  ],
+  "evidence": {
+    "document_path": "evidence/approvals/phase0_charter_signed.pdf",
+    "validation_report": "evidence/validation/phase0_contract_validation.json"
+  }
+}

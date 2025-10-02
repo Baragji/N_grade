@@ -1,7 +1,0 @@
-node_modules
-dist
-.env
-output
-.nyc_output
-coverage
-.DS_Store

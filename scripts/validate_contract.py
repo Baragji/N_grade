@@ -325,7 +325,7 @@ class ContractValidator:
         for validation in self.contract.get("cross_file_validations", []):
             # Simple pass for now (would need specific implementation per validation type)
             self.results["cross_file_validation_results"].append({
-                "validation_name": validation["name"],
+                "validation_name": validation.get("name") or validation.get("validation_name"),
                 "status": "PASS",
                 "details": "Manual review required"
             })

@@ -1,0 +1,3 @@
+# Ignore CVEs that are marked will_not_fix by the distro or not applicable
+# zlib MiniZip is not part of Debian zlib product; tracked as will_not_fix
+CVE-2023-45853

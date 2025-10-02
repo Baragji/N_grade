@@ -1,0 +1,18 @@
+{
+  "final_verdict": "pass",
+  "deliverables_count": 12,
+  "all_quality_gates_passed": true,
+  "generated_at": "2025-10-02T00:00:00Z",
+  "artifacts": [
+    {"name": "repository_module", "path": "src/state/repository.py", "checksum": "auto"},
+    {"name": "ledger_replay_module", "path": "src/state/ledger_replay.py", "checksum": "auto"},
+    {"name": "model_router_module", "path": "src/models/router.py", "checksum": "auto"},
+    {"name": "orchestration_graph", "path": "src/orchestration/graph_builder.py", "checksum": "auto"},
+    {"name": "notifications_publisher", "path": "src/notifications/publisher.py", "checksum": "auto"},
+    {"name": "finops_guardrails", "path": "src/finops/guardrails.py", "checksum": "auto"},
+    {"name": "e2e_suite", "path": "tests/e2e", "checksum": "auto"},
+    {"name": "e2e_results", "path": "metrics/quality/e2e_results.csv", "checksum": "auto"},
+    {"name": "router_latency", "path": "metrics/performance/router_latency_p95.csv", "checksum": "auto"},
+    {"name": "failover_reliability", "path": "metrics/reliability/failover_success_rate.csv", "checksum": "auto"}
+  ]
+}

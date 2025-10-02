@@ -1,0 +1,51 @@
+phases:
+  phase_1:
+    description: Core architecture build-out
+    daily_eur_cap: 450
+    monthly_eur_cap: 12000
+    target_latency_ms: 120
+  phase_2:
+    description: Orchestration refinement
+    daily_eur_cap: 350
+    monthly_eur_cap: 9000
+    target_latency_ms: 150
+  phase_3:
+    description: Scale-up and integrations
+    daily_eur_cap: 500
+    monthly_eur_cap: 15000
+    target_latency_ms: 180
+
+providers:
+  openai:
+    endpoint: https://api.openai.com/v1
+    max_tokens: 60000
+    budget:
+      daily_eur_cap: 300
+      monthly_eur_cap: 8000
+  anthropic:
+    endpoint: https://api.anthropic.com
+    max_tokens: 80000
+    budget:
+      daily_eur_cap: 250
+      monthly_eur_cap: 7500
+  local:
+    endpoint: http://localhost:8080
+    max_tokens: 50000
+    budget:
+      daily_eur_cap: 100
+      monthly_eur_cap: 2000
+
+budget_policies:
+  rollover_enabled: false
+  alerting_window_days: 7
+
+alerts:
+  threshold_percent: 80
+  channels:
+    - slack
+    - email
+    - webhook
+
+tracking:
+  ledger_store: postgres
+  cache_store: redis

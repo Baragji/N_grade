@@ -1,0 +1,15 @@
+timestamp,task_type,expected_provider,actual_provider,correct
+2025-01-02T09:00:00Z,planning,openai,openai,True
+2025-01-02T09:05:00Z,coding,anthropic,anthropic,True
+2025-01-02T09:10:00Z,review,openai,openai,True
+2025-01-02T09:15:00Z,planning,openai,anthropic,False
+2025-01-02T09:20:00Z,coding,anthropic,local,False
+2025-01-02T09:25:00Z,review,openai,openai,True
+2025-01-02T09:30:00Z,planning,openai,openai,True
+2025-01-02T09:35:00Z,coding,anthropic,anthropic,True
+2025-01-02T09:40:00Z,review,openai,openai,True
+2025-01-02T09:45:00Z,planning,openai,openai,True
+2025-01-02T09:50:00Z,coding,anthropic,anthropic,True
+2025-01-02T09:55:00Z,review,openai,openai,True
+2025-01-02T10:00:00Z,planning,openai,openai,True
+2025-01-02T10:05:00Z,coding,anthropic,anthropic,True

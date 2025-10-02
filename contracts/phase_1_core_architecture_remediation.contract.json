@@ -1,0 +1,268 @@
+{
+  "$schema": "../docs/Workflows/02_project-N-Grade_contract/documentation_delivery.contract.schema.json",
+  "contract_version": "1.0.0",
+  "contract_id": "PHASE_1_CORE_ARCHITECTURE_REMEDIATION_2025",
+  "intent": "Remediate and harden Phase 1 core architecture with stricter quality gates, reliability patterns, observability, and end-to-end validation. Zero fake, zero bug, production-grade: deterministic behavior, auditable evidence, and CI-verifiable metrics.",
+
+  "deliverables": [
+    {
+      "file_path": "src/state/repository.py",
+      "file_type": "python",
+      "purpose": "Hardened distributed state repository with transactional guarantees, cache TTL, integrity hashing, exponential backoff, and structured logging. Targets: <45ms Redis p95, <110ms PostgreSQL write p95.",
+      "quality_gates": {
+        "min_lines": 200,
+        "max_lines": 320,
+        "required_patterns": [
+          {"pattern": "from redis import Redis", "min_occurrences": 1, "reason": "Must use Redis client"},
+          {"pattern": "from sqlalchemy", "min_occurrences": 1, "reason": "Must use SQLAlchemy for PostgreSQL"},
+          {"pattern": "hashlib\\.sha256", "min_occurrences": 1, "reason": "Must compute integrity checksums"},
+          {"pattern": "def save\\(", "min_occurrences": 1, "reason": "Must provide save()"},
+          {"pattern": "def get\\(", "min_occurrences": 1, "reason": "Must provide get()"},
+          {"pattern": "def delete\\(", "min_occurrences": 1, "reason": "Must provide delete()"},
+          {"pattern": "setex|expire", "min_occurrences": 1, "reason": "Must implement Redis TTL"},
+          {"pattern": "session\\.begin|begin\\(", "min_occurrences": 1, "reason": "Must use DB transactions"},
+          {"pattern": "try:|except ", "min_occurrences": 2, "reason": "Must handle errors robustly"},
+          {"pattern": "logging|getLogger", "min_occurrences": 1, "reason": "Must use structured logging"},
+          {"pattern": "retry|backoff|exponential", "min_occurrences": 1, "reason": "Must provide retry with backoff"},
+          {"pattern": "validate_integrity|checksum", "min_occurrences": 1, "reason": "Must validate payload integrity"},
+          {"pattern": "commit\\(\\)", "min_occurrences": 1, "reason": "Must commit DB transactions"}
+        ],
+        "forbidden_patterns": [
+          {"pattern": "TODO|TBD|FIXME", "reason": "Implementation must be complete"},
+          {"pattern": "pass\\s*$", "reason": "No empty stubs"},
+          {"pattern": "raise NotImplementedError", "reason": "No unimplemented methods"},
+          {"pattern": "print\\(", "reason": "Use structured logging instead of print"}
+        ],
+        "structural_requirements": {
+          "min_classes": 1,
+          "min_functions": 5,
+          "min_docstrings": 4
+        }
+      }
+    },
+
+    {
+      "file_path": "src/state/ledger_replay.py",
+      "file_type": "python",
+      "purpose": "Deterministic session ledger replay with strict ordering, idempotency, checksum validation, and transactional commits. Targets: <70ms append p95.",
+      "quality_gates": {
+        "min_lines": 150,
+        "max_lines": 240,
+        "required_patterns": [
+          {"pattern": "from sqlalchemy", "min_occurrences": 1, "reason": "Must use SQLAlchemy"},
+          {"pattern": "def replay", "min_occurrences": 1, "reason": "Must expose replay function"},
+          {"pattern": "sorted\\(", "min_occurrences": 1, "reason": "Must enforce strict ordering"},
+          {"pattern": "commit\\(\\)", "min_occurrences": 1, "reason": "Must commit after replay"},
+          {"pattern": "if .+\\.replayed", "min_occurrences": 1, "reason": "Must check idempotency"},
+          {"pattern": "hashlib\\.sha256|checksum", "min_occurrences": 1, "reason": "Must validate immutable checksums"},
+          {"pattern": "session\\.begin|begin\\(", "min_occurrences": 1, "reason": "Must wrap operations in transactions"},
+          {"pattern": "logging|getLogger", "min_occurrences": 1, "reason": "Must provide structured logging"}
+        ],
+        "forbidden_patterns": [
+          {"pattern": "TODO|TBD|FIXME", "reason": "Implementation must be complete"},
+          {"pattern": "pass\\s*$", "reason": "No empty stubs"}
+        ],
+        "structural_requirements": {
+          "min_functions": 3,
+          "min_docstrings": 3
+        }
+      }
+    },
+
+    {
+      "file_path": "src/models/router.py",
+      "file_type": "python",
+      "purpose": "Hardened multi-model router with budget enforcement, provider timeouts, circuit-breaker style failover, audit trail, and latency targets. Targets: <110ms routing p95, ≥99% failover success, zero budget breaches.",
+      "quality_gates": {
+        "min_lines": 180,
+        "max_lines": 320,
+        "required_patterns": [
+          {"pattern": "class ModelRouter", "min_occurrences": 1, "reason": "Must provide router class"},
+          {"pattern": "async def route", "min_occurrences": 1, "reason": "Must provide async route()"},
+          {"pattern": "openai|anthropic", "min_occurrences": 2, "reason": "Must support multiple providers"},
+          {"pattern": "budget", "min_occurrences": 3, "reason": "Must enforce budgets"},
+          {"pattern": "estimate_cost|record", "min_occurrences": 2, "reason": "Must track costs"},
+          {"pattern": "failover|fallback", "min_occurrences": 1, "reason": "Must implement failover"},
+          {"pattern": "timeout|wait_for|TimeoutError", "min_occurrences": 1, "reason": "Must enforce timeouts"},
+          {"pattern": "audit|history|audit_trail", "min_occurrences": 1, "reason": "Must maintain audit trail"},
+          {"pattern": "try:|except ", "min_occurrences": 2, "reason": "Must handle errors robustly"}
+        ],
+        "forbidden_patterns": [
+          {"pattern": "TODO|TBD|FIXME", "reason": "Router must be complete"},
+          {"pattern": "pass\\s*$", "reason": "No empty stubs"}
+        ],
+        "structural_requirements": {
+          "min_classes": 1,
+          "min_functions": 5,
+          "min_docstrings": 4
+        }
+      }
+    },
+
+    {
+      "file_path": "tests/e2e/test_phase1_end_to_end.py",
+      "file_type": "python",
+      "purpose": "System-level E2E test validating state save/get, routing execution, and ledger replay across a realistic workflow with assertions on budgets, latency, and integrity.",
+      "quality_gates": {
+        "min_lines": 120,
+        "max_lines": 300,
+        "required_patterns": [
+          {"pattern": "import pytest", "min_occurrences": 1, "reason": "Must use pytest"},
+          {"pattern": "@pytest\\.mark\\.asyncio", "min_occurrences": 1, "reason": "Must run async E2E"},
+          {"pattern": "from src\\.models\\.router import ModelRouter|ModelRouter\\(", "min_occurrences": 1, "reason": "Must exercise router"},
+          {"pattern": "from src\\.state\\.repository|src\\.state\\.repository", "min_occurrences": 1, "reason": "Must exercise repository"},
+          {"pattern": "assert ", "min_occurrences": 5, "reason": "Must assert behavior"}
+        ],
+        "forbidden_patterns": [
+          {"pattern": "TODO|TBD|FIXME", "reason": "No placeholders"},
+          {"pattern": "pass\\s*$", "reason": "No empty tests"}
+        ],
+        "structural_requirements": {
+          "min_functions": 2,
+          "min_docstrings": 1
+        }
+      }
+    },
+
+    {
+      "file_path": "tests/e2e/test_budget_and_failover.py",
+      "file_type": "python",
+      "purpose": "E2E validation that budget caps are enforced and provider failover achieves ≥99% success rate under simulated provider errors/timeouts.",
+      "quality_gates": {
+        "min_lines": 100,
+        "max_lines": 240,
+        "required_patterns": [
+          {"pattern": "import pytest", "min_occurrences": 1, "reason": "Must use pytest"},
+          {"pattern": "@pytest\\.mark\\.asyncio", "min_occurrences": 1, "reason": "Must run async E2E"},
+          {"pattern": "failover|fallback", "min_occurrences": 1, "reason": "Must assert failover"},
+          {"pattern": "budget|BudgetExceededError", "min_occurrences": 1, "reason": "Must assert budget enforcement"},
+          {"pattern": "assert ", "min_occurrences": 4, "reason": "Must assert behavior"}
+        ],
+        "forbidden_patterns": [
+          {"pattern": "TODO|TBD|FIXME", "reason": "No placeholders"}
+        ],
+        "structural_requirements": {
+          "min_functions": 2,
+          "min_docstrings": 1
+        }
+      }
+    },
+
+    {
+      "file_path": "tests/e2e/test_ledger_replay_idempotency.py",
+      "file_type": "python",
+      "purpose": "E2E validation that ledger replay is idempotent, strictly ordered, and checksum-validated, with no duplicate side effects on replays.",
+      "quality_gates": {
+        "min_lines": 80,
+        "max_lines": 200,
+        "required_patterns": [
+          {"pattern": "import pytest", "min_occurrences": 1, "reason": "Must use pytest"},
+          {"pattern": "def test_", "min_occurrences": 1, "reason": "Must contain executable tests"},
+          {"pattern": "sorted\\(", "min_occurrences": 1, "reason": "Must validate ordering"},
+          {"pattern": "checksum|hashlib", "min_occurrences": 1, "reason": "Must validate checksums"},
+          {"pattern": "assert ", "min_occurrences": 4, "reason": "Must assert behavior"}
+        ],
+        "forbidden_patterns": [
+          {"pattern": "TODO|TBD|FIXME", "reason": "No placeholders"}
+        ],
+        "structural_requirements": {
+          "min_functions": 1,
+          "min_docstrings": 1
+        }
+      }
+    },
+
+    {
+      "file_path": "scripts/run_e2e.py",
+      "file_type": "python",
+      "purpose": "CLI to run E2E test suite, capture timings, and generate metrics/evidence artifacts with exit codes suitable for CI.",
+      "quality_gates": {
+        "min_lines": 120,
+        "max_lines": 280,
+        "required_patterns": [
+          {"pattern": "#!/usr/bin/env python3", "min_occurrences": 1, "reason": "Must include shebang"},
+          {"pattern": "import argparse", "min_occurrences": 1, "reason": "Must accept CLI args"},
+          {"pattern": "subprocess|pytest", "min_occurrences": 1, "reason": "Must invoke test runner"},
+          {"pattern": "csv", "min_occurrences": 1, "reason": "Must write CSV metrics"},
+          {"pattern": "json", "min_occurrences": 1, "reason": "Must write JSON evidence"},
+          {"pattern": "sys\\.exit\\(", "min_occurrences": 1, "reason": "Must return exit code"}
+        ],
+        "forbidden_patterns": [
+          {"pattern": "TODO|TBD|FIXME", "reason": "Script must be complete"},
+          {"pattern": "pass\\s*$", "reason": "No empty stubs"}
+        ],
+        "structural_requirements": {
+          "min_functions": 3,
+          "min_docstrings": 2
+        }
+      }
+    },
+
+    {
+      "file_path": "evidence/validation/phase1_remediation_validation.json",
+      "file_type": "json",
+      "purpose": "Machine-readable validation report for remediation scope including verdict, counts, and artifact paths.",
+      "quality_gates": {
+        "min_lines": 20,
+        "max_lines": 400,
+        "required_patterns": [
+          {"pattern": "\\\"final_verdict\\\"", "min_occurrences": 1, "reason": "Must include verdict"},
+          {"pattern": "\\\"deliverables_count\\\"", "min_occurrences": 1, "reason": "Must include deliverable count"},
+          {"pattern": "\\\"all_quality_gates_passed\\\"", "min_occurrences": 1, "reason": "Must include gate status"},
+          {"pattern": "\\\"artifacts\\\"", "min_occurrences": 1, "reason": "Must list artifacts"}
+        ],
+        "forbidden_patterns": [
+          {"pattern": "TODO|TBD|FIXME", "reason": "Report must be final"}
+        ]
+      }
+    },
+
+    {
+      "file_path": "metrics/performance/router_latency_p95.csv",
+      "file_type": "csv",
+      "purpose": "Performance metrics for router latency including per-task latency and rolling p95, verifying <110ms target.",
+      "quality_gates": {
+        "min_lines": 10,
+        "max_lines": 1000,
+        "required_patterns": [
+          {"pattern": "timestamp,task,latency_ms,p95_ms", "min_occurrences": 1, "reason": "Must include CSV header"}
+        ],
+        "forbidden_patterns": [
+          {"pattern": "^,$", "reason": "No empty CSV rows"}
+        ]
+      }
+    },
+
+    {
+      "file_path": "metrics/reliability/failover_success_rate.csv",
+      "file_type": "csv",
+      "purpose": "Reliability metrics validating ≥99% failover success under simulated outages/timeouts.",
+      "quality_gates": {
+        "min_lines": 10,
+        "max_lines": 1000,
+        "required_patterns": [
+          {"pattern": "timestamp,total_requests,failovers,success_rate", "min_occurrences": 1, "reason": "Must include CSV header"}
+        ],
+        "forbidden_patterns": [
+          {"pattern": "^,$", "reason": "No empty CSV rows"}
+        ]
+      }
+    },
+
+    {
+      "file_path": "metrics/quality/e2e_results.csv",
+      "file_type": "csv",
+      "purpose": "E2E test result rollups for CI and dashboards.",
+      "quality_gates": {
+        "min_lines": 10,
+        "max_lines": 1000,
+        "required_patterns": [
+          {"pattern": "test_name,status,duration_ms", "min_occurrences": 1, "reason": "Must include CSV header"}
+        ],
+        "forbidden_patterns": [
+          {"pattern": "^,$", "reason": "No empty rows"}
+        ]
+      }
+    }
+  ]
+}

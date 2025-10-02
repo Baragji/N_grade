@@ -1,0 +1,17 @@
+{
+  "gate_id": "G0",
+  "phase": "Phase 0",
+  "status": "PASS",
+  "timestamp": "2025-10-01T10:00:00Z",
+  "criteria": [
+    "All deliverables present and validated",
+    "CI/CD workflows configured with lint, test, and validation",
+    "Docker environment healthchecks confirmed",
+    "Evidence artifacts stored under evidence/ directories"
+  ],
+  "evidence": {
+    "contract_validation": "evidence/validation/phase0_contract_validation.json",
+    "structure_validation": "evidence/validation/structure_validation.json",
+    "approvals": "evidence/approvals/phase0_charter.json"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "command": [
+    "/Users/Yousef_1/.pyenv/versions/3.13.1/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/e2e",
+    "-q"
+  ],
+  "exit_code": 0,
+  "duration_ms": 1320.714749977924,
+  "stdout": "...                                                                      [100%]\n=============================== warnings summary ===============================\ntests/e2e/test_phase1_end_to_end.py::test_phase_one_end_to_end\n  /Users/Yousef_1/Coding/N_grade/tests/e2e/test_phase1_end_to_end.py:126: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).\n    repository.purge_stale(datetime.utcnow() + timedelta(days=365))\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n",
+  "stderr": "/Users/Yousef_1/.pyenv/versions/3.13.1/lib/python3.13/site-packages/pytest_asyncio/plugin.py:208: PytestDeprecationWarning: The configuration option \"asyncio_default_fixture_loop_scope\" is unset.\nThe event loop scope for asynchronous fixtures will default to the fixture caching scope. Future versions of pytest-asyncio will default the loop scope for asynchronous fixtures to function scope. Set the default fixture loop scope explicitly in order to avoid unexpected behavior in the future. Valid fixture loop scopes are: \"function\", \"class\", \"module\", \"package\", \"session\"\n\n  warnings.warn(PytestDeprecationWarning(_DEFAULT_FIXTURE_LOOP_SCOPE_UNSET))\n",
+  "timestamp": 1759392047.923554
+}

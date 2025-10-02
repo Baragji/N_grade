@@ -1,0 +1,51 @@
+weights:
+  cost: 0.4
+  latency: 0.3
+  accuracy: 0.3
+
+providers:
+  openai:
+    endpoint: https://api.openai.com/v1
+    max_tokens: 60000
+    cost_per_1k: 0.018
+    latency_ms: 120
+    failover: [anthropic, local]
+  anthropic:
+    endpoint: https://api.anthropic.com
+    max_tokens: 80000
+    cost_per_1k: 0.02
+    latency_ms: 140
+    failover: [openai, local]
+  local:
+    endpoint: http://localhost:8080
+    max_tokens: 40000
+    cost_per_1k: 0.005
+    latency_ms: 250
+    failover: [openai]
+
+budget:
+  daily_cap: 450
+  monthly_cap: 12000
+  alert_threshold_percent: 80
+
+failover:
+  retries: 2
+  backoff_seconds: 2
+
+task_types:
+  planning:
+    preferred: openai
+    secondary: anthropic
+  coding:
+    preferred: anthropic
+    secondary: openai
+    fallback: local
+  review:
+    preferred: openai
+    secondary: anthropic
+    fallback: local
+
+policies:
+  ensure_budget: true
+  enforce_failover: true
+  latency_target_ms: 150
